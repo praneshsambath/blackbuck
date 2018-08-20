@@ -1,11 +1,14 @@
-import { DatePicker } from 'antd';
 import * as React from 'react';
 import './App.css';
+import SiderDemo from './indents/indents';
+// import SiderDemo from './indents/indents';
 
 class App extends React.Component {
   public render() {
     return (
-      <DatePicker />
+    
+     <div><SiderDemo/></div>
+      
     );
   }
 }
