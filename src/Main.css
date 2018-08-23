@@ -1,0 +1,26 @@
+.trigger, .user {
+    font-size: 18px;
+    line-height: 64px;
+    padding: 0 24px;
+    cursor: pointer;
+    transition: color .3s;
+  }
+  
+  .trigger:hover {
+    color: #1890ff;
+  }
+  
+  .logo {
+    height: 32px;
+    color: #fafafa;
+    margin: 16px;
+    text-align: center;
+  }
+  
+  .ant-layout-content {
+    flex: none;
+  }
+  
+  .ant-layout-header {
+    border-bottom: 1px solid #eeeeee;
+  } 

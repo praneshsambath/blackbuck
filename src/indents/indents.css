@@ -33,10 +33,14 @@
 }
 .ant-col-4
 {
-    min-width: 19.66% !important;
+width: 20% !important;
+/* padding-right:opx  */
     
 }
 .allIndentsCard
 {
     border-bottom: 2px solid;
+}
+.ant-row{
+    /* margin-right: -26px !important; */
 }
