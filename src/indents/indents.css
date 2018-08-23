@@ -1,3 +1,42 @@
-.filterContent
-{    padding: 10px 6px 0px 6px;
+.listDescription
+{
+  font-size: 12px;
+  line-height: 0.5em;
+}
+.listAvatar
+{
+    font-size:20px !important;
+
+}
+.ant-card-body {
+    padding: 8px !important;
+    zoom: 1;
+}
+.ant-list-item-meta-title
+{
+    line-height: 12px !important;
+}
+.listTitle
+{
+    font-weight: bold !important;
+}
+.listPercent
+{
+    position: absolute ;
+    bottom: 10px;
+    right: 10px;
+
+}
+
+.ant-card-body{
+    border-bottom:'1px solid'
+}
+.ant-col-4
+{
+    min-width: 19.66% !important;
+    
+}
+.allIndentsCard
+{
+    border-bottom: 2px solid;
 }
