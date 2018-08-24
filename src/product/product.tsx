@@ -1,8 +1,11 @@
-import { Button, Col, Row, Table, Tag } from "antd";
+import { Button, Col, Modal, Row, Table, Tag } from "antd";
 import * as React from "react";
 // import { Link } from "react-router-dom";
 
 class Product extends React.Component {
+  public state = {
+    productDeleteModal: false
+  };
   constructor(props: any) {
     super(props);
   }
@@ -21,8 +24,15 @@ class Product extends React.Component {
       },
       {
         dataIndex: "truckTypePref",
-        render:(truckTypePref:any)=>(<span>{truckTypePref.map((truckType:any)=><Tag  key={truckType}>{truckType}</Tag>)}</span>),
-        sorter: (a: any, b: any) => a.truckTypePref.length - b.truckTypePref.length,
+        render: (truckTypePref: any) => (
+          <span>
+            {truckTypePref.map((truckType: any) => (
+              <Tag key={truckType}>{truckType}</Tag>
+            ))}
+          </span>
+        ),
+        sorter: (a: any, b: any) =>
+          a.truckTypePref.length - b.truckTypePref.length,
         title: "Truck Type Preference"
       }
     ];
@@ -76,6 +86,7 @@ class Product extends React.Component {
               icon="edit"
             />
             <Button
+              onClick={this.deleteProductModal}
               ghost={true}
               type="primary"
               style={{ marginLeft: 12 }}
@@ -88,8 +99,40 @@ class Product extends React.Component {
           dataSource={data}
           rowSelection={rowSelection}
         />
+        <Modal
+          title="Delete Products"
+          visible={this.state.productDeleteModal}
+          onOk={this.DeleteProduct}
+          onCancel={this.cancelDeleteProductrModal}
+          okText="Delete"
+          okType="primary"
+        >
+          <b>Are You Sure You want to delete Products?</b>
+          <br />
+          <span>
+            Deleting the selected Products will remove all the details
+            related to the Products
+          </span>
+        </Modal>
       </div>
     );
   }
+  private deleteProductModal = () => {
+    this.setState({
+      productDeleteModal: true
+    });
+  };
+  private DeleteProduct = () => {
+    console.log("delete");
+    this.setState({
+      productDeleteModal: false
+    });
+  };
+  private cancelDeleteProductrModal = () => {
+    console.log("cancel");
+    this.setState({
+      productDeleteModal: false
+    });
+  };
 }
 export default Product;

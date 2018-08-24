@@ -1,11 +1,12 @@
-import { Avatar, Button, Card, Col, List, Row, Table } from "antd";
+import { Avatar, Button, Card, Col, List, Modal, Row, Table } from "antd";
 import * as React from "react";
 import "./indents.css";
 
 class Indents extends React.Component {
   public state = {
     activeCard: false,
-    collapsed: false
+    collapsed: false,
+    indentDeleteModal:false,
   };
 
   public toggle = () => {
@@ -161,6 +162,7 @@ class Indents extends React.Component {
               icon="edit"
             />
             <Button
+            onClick={this.DeleteTransporterModal}
               ghost={true}
               type="primary"
               style={{ marginLeft: 12 }}
@@ -255,8 +257,40 @@ class Indents extends React.Component {
           columns={columns}
           onChange={this.onChange}
         />
+        <Modal
+          title="Delete Indents"
+    
+          visible={this.state.indentDeleteModal}
+          onOk={this.DeleteIndents}
+          onCancel={this.cancelDeleteIndentsModal}
+          okText ="Delete"
+          okType="primary"
+        >
+         <b>Are You Sure You want to delete Indents?</b>
+         <br/>
+         <span>Deleting the selected Indents will remove all the  details related to the Indents</span>
+        </Modal>
       </div>
     );
+  }
+  private DeleteTransporterModal= () => {
+    this.setState({
+      indentDeleteModal: true
+    });
+  }
+  private DeleteIndents=()=>
+  {
+    console.log("delete")
+    this.setState({
+      indentDeleteModal: false
+    });
+  }
+  private cancelDeleteIndentsModal=()=>
+  {
+    console.log("cancel")
+    this.setState({
+      indentDeleteModal: false
+    });
   }
 }
 

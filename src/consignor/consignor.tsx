@@ -1,9 +1,12 @@
-import { Button, Col, Row, Table } from "antd";
+import { Button, Col, Modal, Row, Table } from "antd";
 import * as React from "react";
 // import './transporter.css';
 // import { Link } from "react-router-dom";
 
 class Consignor extends React.Component {
+  public state = {
+    consignorDeleteModal: false
+  };
   constructor(props: any) {
     super(props);
   }
@@ -108,6 +111,7 @@ class Consignor extends React.Component {
               icon="edit"
             />
             <Button
+              onClick={this.deleteConsignorModal}
               ghost={true}
               type="primary"
               style={{ marginLeft: 12 }}
@@ -120,8 +124,40 @@ class Consignor extends React.Component {
           dataSource={data}
           rowSelection={rowSelection}
         />
+        <Modal
+          title="Delete Consignor"
+          visible={this.state.consignorDeleteModal}
+          onOk={this.DeleteConsignor}
+          onCancel={this.cancelDeleteConsignorModal}
+          okText="Delete"
+          okType="primary"
+        >
+          <b>Are You Sure You want to delete Consignor?</b>
+          <br />
+          <span>
+            Deleting the selected Consignor will remove all the details related
+            to the Consignor
+          </span>
+        </Modal>
       </div>
     );
   }
+  private deleteConsignorModal = () => {
+    this.setState({
+      consignorDeleteModal: true
+    });
+  };
+  private DeleteConsignor = () => {
+    console.log("delete");
+    this.setState({
+      consignorDeleteModal: false
+    });
+  };
+  private cancelDeleteConsignorModal = () => {
+    console.log("cancel");
+    this.setState({
+      consignorDeleteModal: false
+    });
+  };
 }
 export default Consignor;

@@ -1,9 +1,12 @@
-import { Button, Col, Row, Table } from "antd";
+import { Button, Col, Modal, Row, Table } from "antd";
 import * as React from "react";
 // import './transporter.css';
 // import { Link } from "react-router-dom";
 
 class TruckType extends React.Component {
+  public state = {
+    deleteTrucktypeModal: false
+  };
   constructor(props: any) {
     super(props);
   }
@@ -92,6 +95,7 @@ class TruckType extends React.Component {
               icon="edit"
             />
             <Button
+              onClick={this.deleteTruckTypeModal}
               ghost={true}
               type="primary"
               style={{ marginLeft: 12 }}
@@ -104,8 +108,40 @@ class TruckType extends React.Component {
           dataSource={data}
           rowSelection={rowSelection}
         />
+        <Modal
+          title="Delete TruckType"
+          visible={this.state.deleteTrucktypeModal}
+          onOk={this.DeleteTruckType}
+          onCancel={this.cancelDeleteTruckTypeModal}
+          okText="Delete"
+          okType="primary"
+        >
+          <b>Are You Sure You want to delete Truck Type?</b>
+          <br />
+          <span>
+            Deleting the selected Truck Type will remove all the details related
+            to the Truck Type
+          </span>
+        </Modal>
       </div>
     );
   }
+  private deleteTruckTypeModal = () => {
+    this.setState({
+      deleteTrucktypeModal: true
+    });
+  };
+  private DeleteTruckType = () => {
+    console.log("delete");
+    this.setState({
+      deleteTrucktypeModal: false
+    });
+  };
+  private cancelDeleteTruckTypeModal = () => {
+    console.log("cancel");
+    this.setState({
+      deleteTrucktypeModal: false
+    });
+  };
 }
 export default TruckType;

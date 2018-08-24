@@ -1,12 +1,13 @@
-import { Button, Col, Row, Table } from "antd";
+import { Button, Col, Modal, Row, Table } from "antd";
 import * as React from "react";
 import "./transporter.css";
+// import TransporterForm from "./transporterForm";
 // import { Link } from "react-router-dom";
 
 class Transporter extends React.Component {
-  constructor(props: any) {
-    super(props);
-  }
+  public state = {
+    transporterDeleteModal: false
+  };
 
   public render() {
     const columns = [
@@ -23,19 +24,20 @@ class Transporter extends React.Component {
       },
       {
         dataIndex: "primary_email_id",
-        sorter: (a: any, b: any) => a.primary_email_id.length - b.primary_email_id.length,
+        sorter: (a: any, b: any) =>
+          a.primary_email_id.length - b.primary_email_id.length,
         title: "Primary Email ID"
       },
       {
         dataIndex: "primary_mobile_number",
         sorter: (a: any, b: any) =>
-        a.primary_mobile_number - b.primary_mobile_number,
-        title: "Primary Mobile Number",
-      
+          a.primary_mobile_number - b.primary_mobile_number,
+        title: "Primary Mobile Number"
       }
     ];
     const data = [
-      {  id: "101",
+      {
+        id: "101",
         key: "1",
         name: "pranesh",
         primary_email_id: "abcd@eynos.com",
@@ -63,7 +65,10 @@ class Transporter extends React.Component {
         <Row type="flex" justify="space-between" align="middle">
           <Col />
           <Col>
-            <Button type="primary" icon="plus">
+            <Button
+              type="primary"
+              icon="plus"
+            >
               Add Transporter
             </Button>
             <Button
@@ -85,6 +90,7 @@ class Transporter extends React.Component {
               icon="edit"
             />
             <Button
+               onClick={this.DeleteTransporterModal}
               ghost={true}
               type="primary"
               style={{ marginLeft: 12 }}
@@ -97,8 +103,40 @@ class Transporter extends React.Component {
           dataSource={data}
           rowSelection={rowSelection}
         />
+        <Modal
+          title="Delete Transporter"
+    
+          visible={this.state.transporterDeleteModal}
+          onOk={this.DeleteTransporter}
+          onCancel={this.cancelDeleteTransporterModal}
+          okText ="Delete"
+          okType="primary"
+        >
+         <b>Are You Sure You want to delete transporters?</b>
+         <br/>
+         <span>Deleting the selected transporters will remove all the  details related to the transporters</span>
+        </Modal>
       </div>
     );
+  }
+  private DeleteTransporterModal= () => {
+    this.setState({
+      transporterDeleteModal: true
+    });
+  }
+  private DeleteTransporter=()=>
+  {
+    console.log("delete")
+    this.setState({
+      transporterDeleteModal: false
+    });
+  }
+  private cancelDeleteTransporterModal=()=>
+  {
+    console.log("cancel")
+    this.setState({
+      transporterDeleteModal: false
+    });
   }
 }
 export default Transporter;

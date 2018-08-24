@@ -29,7 +29,7 @@ class Main extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      collapsed: true
+      collapsed: false
     };
   }
   public toggle = () => {

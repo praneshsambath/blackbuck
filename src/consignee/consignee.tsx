@@ -1,9 +1,12 @@
-import { Button, Col, Row, Table } from "antd";
+import { Button, Col, Modal, Row, Table } from "antd";
 import * as React from "react";
 // import './transporter.css';
 // import { Link } from "react-router-dom";
 
 class Consignee extends React.Component {
+  public state={
+    deleteConsigneeModal:false,
+  };
   constructor(props: any) {
     super(props);
   }
@@ -108,6 +111,7 @@ class Consignee extends React.Component {
               icon="edit"
             />
             <Button
+            onClick={this.deleteConsigneeModal}
               ghost={true}
               type="primary"
               style={{ marginLeft: 12 }}
@@ -120,8 +124,40 @@ class Consignee extends React.Component {
           dataSource={data}
           rowSelection={rowSelection}
         />
+         <Modal
+          title="Delete Consignee"
+          visible={this.state.deleteConsigneeModal}
+          onOk={this.DeleteConsignee}
+          onCancel={this.cancelDeleteConsigneeModal}
+          okText="Delete"
+          okType="primary"
+        >
+          <b>Are You Sure You want to delete Consignee?</b>
+          <br />
+          <span>
+            Deleting the selected Consignee will remove all the details related
+            to the Consignee
+          </span>
+        </Modal>
       </div>
     );
   }
+  private deleteConsigneeModal = () => {
+    this.setState({
+      deleteConsigneeModal: true
+    });
+  };
+  private DeleteConsignee = () => {
+    console.log("delete");
+    this.setState({
+      deleteConsigneeModal: false
+    });
+  };
+  private cancelDeleteConsigneeModal = () => {
+    console.log("cancel");
+    this.setState({
+      deleteConsigneeModal: false
+    });
+  };
 }
 export default Consignee;
