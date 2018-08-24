@@ -2,7 +2,16 @@ import { Icon, Layout, Menu } from "antd";
 import * as React from "react";
 import * as reactRouter from "react-router-dom";
 import { Link, withRouter } from "react-router-dom";
-import { TitleConsignee, TitleConsignor, TitleDashboard, TitleIndents, TitleProduct, TitleTransporter, TitleTruckType, TitleUnAllocatedUnits } from "./common/pageTile";
+import {
+  TitleConsignee,
+  TitleConsignor,
+  TitleDashboard,
+  TitleIndents,
+  TitleProduct,
+  TitleTransporter,
+  TitleTruckType,
+  TitleUnAllocatedUnits
+} from "./common/pageTile";
 import Consignee from "./consignee/consignee";
 import Consignor from "./consignor/consignor";
 import Dashboard from "./dashboard/dashboard";
@@ -131,7 +140,11 @@ class Main extends React.Component<IProps, IState> {
             <Route exact={true} path="/dashboard" component={TitleDashboard} />
             <Route exact={true} path="/truckType" component={TitleTruckType} />
             <Route exact={true} path="/product" component={TitleProduct} />
-            <Route exact={true} path="/unAllocatedUnits" component={TitleUnAllocatedUnits} />
+            <Route
+              exact={true}
+              path="/unAllocatedUnits"
+              component={TitleUnAllocatedUnits}
+            />
           </Header>
           <Content
             style={{
@@ -148,7 +161,11 @@ class Main extends React.Component<IProps, IState> {
               <Route path="/dashboard" exact={true} component={Dashboard} />
               <Route path="/truckType" exact={true} component={TruckType} />
               <Route path="/product" exact={true} component={Product} />
-              <Route exact={true} path="/unAllocatedUnits" component={UnAllocatedUnits} />
+              <Route
+                exact={true}
+                path="/unAllocatedUnits"
+                component={UnAllocatedUnits}
+              />
             </div>
           </Content>
         </Layout>

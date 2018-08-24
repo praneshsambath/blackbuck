@@ -65,10 +65,7 @@ class Transporter extends React.Component {
         <Row type="flex" justify="space-between" align="middle">
           <Col />
           <Col>
-            <Button
-              type="primary"
-              icon="plus"
-            >
+            <Button type="primary" icon="plus">
               Add Transporter
             </Button>
             <Button
@@ -90,7 +87,7 @@ class Transporter extends React.Component {
               icon="edit"
             />
             <Button
-               onClick={this.DeleteTransporterModal}
+              onClick={this.DeleteTransporterModal}
               ghost={true}
               type="primary"
               style={{ marginLeft: 12 }}
@@ -105,38 +102,38 @@ class Transporter extends React.Component {
         />
         <Modal
           title="Delete Transporter"
-    
           visible={this.state.transporterDeleteModal}
           onOk={this.DeleteTransporter}
           onCancel={this.cancelDeleteTransporterModal}
-          okText ="Delete"
+          okText="Delete"
           okType="primary"
         >
-         <b>Are You Sure You want to delete transporters?</b>
-         <br/>
-         <span>Deleting the selected transporters will remove all the  details related to the transporters</span>
+          <b>Are You Sure You want to delete transporters?</b>
+          <br />
+          <span>
+            Deleting the selected transporters will remove all the details
+            related to the transporters
+          </span>
         </Modal>
       </div>
     );
   }
-  private DeleteTransporterModal= () => {
+  private DeleteTransporterModal = () => {
     this.setState({
       transporterDeleteModal: true
     });
-  }
-  private DeleteTransporter=()=>
-  {
-    console.log("delete")
+  };
+  private DeleteTransporter = () => {
+    console.log("delete");
     this.setState({
       transporterDeleteModal: false
     });
-  }
-  private cancelDeleteTransporterModal=()=>
-  {
-    console.log("cancel")
+  };
+  private cancelDeleteTransporterModal = () => {
+    console.log("cancel");
     this.setState({
       transporterDeleteModal: false
     });
-  }
+  };
 }
 export default Transporter;

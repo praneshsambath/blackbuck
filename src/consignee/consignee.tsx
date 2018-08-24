@@ -4,8 +4,8 @@ import * as React from "react";
 // import { Link } from "react-router-dom";
 
 class Consignee extends React.Component {
-  public state={
-    deleteConsigneeModal:false,
+  public state = {
+    deleteConsigneeModal: false
   };
   constructor(props: any) {
     super(props);
@@ -111,7 +111,7 @@ class Consignee extends React.Component {
               icon="edit"
             />
             <Button
-            onClick={this.deleteConsigneeModal}
+              onClick={this.deleteConsigneeModal}
               ghost={true}
               type="primary"
               style={{ marginLeft: 12 }}
@@ -124,7 +124,7 @@ class Consignee extends React.Component {
           dataSource={data}
           rowSelection={rowSelection}
         />
-         <Modal
+        <Modal
           title="Delete Consignee"
           visible={this.state.deleteConsigneeModal}
           onOk={this.DeleteConsignee}

@@ -110,8 +110,8 @@ class Product extends React.Component {
           <b>Are You Sure You want to delete Products?</b>
           <br />
           <span>
-            Deleting the selected Products will remove all the details
-            related to the Products
+            Deleting the selected Products will remove all the details related
+            to the Products
           </span>
         </Modal>
       </div>

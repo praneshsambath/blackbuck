@@ -6,7 +6,7 @@ class Indents extends React.Component {
   public state = {
     activeCard: false,
     collapsed: false,
-    indentDeleteModal:false,
+    indentDeleteModal: false
   };
 
   public toggle = () => {
@@ -162,7 +162,7 @@ class Indents extends React.Component {
               icon="edit"
             />
             <Button
-            onClick={this.DeleteTransporterModal}
+              onClick={this.DeleteTransporterModal}
               ghost={true}
               type="primary"
               style={{ marginLeft: 12 }}
@@ -170,10 +170,7 @@ class Indents extends React.Component {
             />
           </Col>
         </Row>
-        <div
-          className="filterContent"
-          style={{ padding: "15px 0px 15px 0px" }}
-        >
+        <div className="filterContent" style={{ padding: "15px 0px 15px 0px" }}>
           <Row onClick={this.onActiveFilter} gutter={16}>
             <Col span={4}>
               <Card id="allIndents" bordered={false}>
@@ -259,39 +256,39 @@ class Indents extends React.Component {
         />
         <Modal
           title="Delete Indents"
-    
           visible={this.state.indentDeleteModal}
           onOk={this.DeleteIndents}
           onCancel={this.cancelDeleteIndentsModal}
-          okText ="Delete"
+          okText="Delete"
           okType="primary"
         >
-         <b>Are You Sure You want to delete Indents?</b>
-         <br/>
-         <span>Deleting the selected Indents will remove all the  details related to the Indents</span>
+          <b>Are You Sure You want to delete Indents?</b>
+          <br />
+          <span>
+            Deleting the selected Indents will remove all the details related to
+            the Indents
+          </span>
         </Modal>
       </div>
     );
   }
-  private DeleteTransporterModal= () => {
+  private DeleteTransporterModal = () => {
     this.setState({
       indentDeleteModal: true
     });
-  }
-  private DeleteIndents=()=>
-  {
-    console.log("delete")
+  };
+  private DeleteIndents = () => {
+    console.log("delete");
     this.setState({
       indentDeleteModal: false
     });
-  }
-  private cancelDeleteIndentsModal=()=>
-  {
-    console.log("cancel")
+  };
+  private cancelDeleteIndentsModal = () => {
+    console.log("cancel");
     this.setState({
       indentDeleteModal: false
     });
-  }
+  };
 }
 
 export default Indents;

@@ -21,7 +21,8 @@ class UnAllocatedUnits extends React.Component {
       },
       {
         dataIndex: "unallocatedunits",
-        sorter: (a: any, b: any) => a.unallocatedunits.length - b.unallocatedunits.length,
+        sorter: (a: any, b: any) =>
+          a.unallocatedunits.length - b.unallocatedunits.length,
         title: "Unallocated Units (MT)"
       }
     ];
@@ -36,7 +37,7 @@ class UnAllocatedUnits extends React.Component {
         id: "102",
         key: "2",
         name: "Sampath Kumar",
-        unallocatedunits:"100"
+        unallocatedunits: "100"
       }
     ];
     const rowSelection = {
