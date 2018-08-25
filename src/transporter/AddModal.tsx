@@ -101,13 +101,11 @@ class AddModal extends React.Component<IProps, IState> {
     this.props.AddModal(false);
   };
   private EmailDynamicField = (value: any) => {
-    console.log(value)
     this.setState({
       dynamicInputField: value
     });
   };
   private primaryMobileField = (value: any) => {
-    console.log(value)
     this.setState({
       mobileInputField: value
     });

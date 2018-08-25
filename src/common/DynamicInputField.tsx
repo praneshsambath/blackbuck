@@ -18,8 +18,9 @@ private uuid = 0;
     super(props);
   }
 
-  public remove = (k: any) => {
+  public remove = (k: any,name:any) => {
     const { form } = this.props;
+    console.log(name)
     // can use data-binding to get
     const keys = form.getFieldValue("keys");
     // We need at least one passenger
@@ -29,8 +30,9 @@ private uuid = 0;
 
     // can use data-binding to set
     form.setFieldsValue({
-      keys: keys.filter((key: any) => key !== k)
+      keys: keys.filter((key: []) => key !== k)
     });
+    // console.log(form.getFieldsValue().name)
   };
 
   public add = () => {
@@ -104,7 +106,7 @@ private uuid = 0;
               className="dynamic-delete-button"
               type="minus-circle-o"
               //   disable={keys.length = 1}
-              onClick={this.remove.bind(this, k)}
+              onClick={this.remove.bind(this, k,`names[${k}]`)}
             />
           ) : null}
         </FormItem>
@@ -127,7 +129,7 @@ private uuid = 0;
   }
 }
 export default Form.create({
-  onValuesChange(props: any, values: any, allValues: []) {
+  onValuesChange(props: any, values: any, allValues:[]) {
     if (allValues) {
       props.onDynamciFieldChange(allValues);
     }
