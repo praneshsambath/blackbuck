@@ -84,7 +84,7 @@ class Main extends React.Component<IProps, IState> {
             </Menu.Item>
             <Menu.Item key="/consignor">
               <Link to="/consignor">
-                <Icon type="contacts" />
+                <Icon  type="contacts" />
                 <span>Consignor</span>
               </Link>
             </Menu.Item>

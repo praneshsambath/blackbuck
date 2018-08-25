@@ -1,13 +1,20 @@
-import { Button, Col, Modal, Row, Table } from "antd";
+import { Button, Col, Row, Table } from "antd";
+import { WrappedFormUtils } from "antd/lib/form/Form";
 import * as React from "react";
+import AddModal from "./AddModal";
+import DeleteModal from "./DeleteModal";
 import "./transporter.css";
-// import TransporterForm from "./transporterForm";
-// import { Link } from "react-router-dom";
+
 
 class Transporter extends React.Component {
   public state = {
-    transporterDeleteModal: false
+    AddModalVisiblity: false,
+    DeleteModalVisiblity: false,
+    transporterEditModal: false
   };
+  constructor(props: { form: WrappedFormUtils }) {
+    super(props);
+  }
 
   public render() {
     const columns = [
@@ -15,7 +22,6 @@ class Transporter extends React.Component {
         dataIndex: "name",
         sorter: (a: any, b: any) => a.name.length - b.name.length,
         title: "Name"
-        //   sorter: (a: any, b: any) => a.name - b.name
       },
       {
         dataIndex: "id",
@@ -65,7 +71,11 @@ class Transporter extends React.Component {
         <Row type="flex" justify="space-between" align="middle">
           <Col />
           <Col>
-            <Button type="primary" icon="plus">
+            <Button
+              type="primary"
+              icon="plus"
+              onClick={this.AddModal.bind(this, true)}
+            >
               Add Transporter
             </Button>
             <Button
@@ -87,7 +97,7 @@ class Transporter extends React.Component {
               icon="edit"
             />
             <Button
-              onClick={this.DeleteTransporterModal}
+              onClick={this.DeleteModal.bind(this, true)}
               ghost={true}
               type="primary"
               style={{ marginLeft: 12 }}
@@ -100,39 +110,29 @@ class Transporter extends React.Component {
           dataSource={data}
           rowSelection={rowSelection}
         />
-        <Modal
-          title="Delete Transporter"
-          visible={this.state.transporterDeleteModal}
-          onOk={this.DeleteTransporter}
-          onCancel={this.cancelDeleteTransporterModal}
-          okText="Delete"
-          okType="primary"
-        >
-          <b>Are You Sure You want to delete transporters?</b>
-          <br />
-          <span>
-            Deleting the selected transporters will remove all the details
-            related to the transporters
-          </span>
-        </Modal>
+        {this.state.DeleteModalVisiblity ? (
+          <DeleteModal
+            DeleteModal={this.DeleteModal}
+            visible={this.state.DeleteModalVisiblity}
+          />
+        ) : null}
+        {this.state.AddModalVisiblity ? (
+          <AddModal
+            AddModal={this.AddModal}
+            visible={this.state.AddModalVisiblity}
+          />
+        ) : null}
       </div>
     );
   }
-  private DeleteTransporterModal = () => {
+  private DeleteModal = (isvisible: boolean) => {
     this.setState({
-      transporterDeleteModal: true
+      DeleteModalVisiblity: isvisible
     });
   };
-  private DeleteTransporter = () => {
-    console.log("delete");
+  private AddModal = (isvisible: boolean) => {
     this.setState({
-      transporterDeleteModal: false
-    });
-  };
-  private cancelDeleteTransporterModal = () => {
-    console.log("cancel");
-    this.setState({
-      transporterDeleteModal: false
+      AddModalVisiblity: isvisible
     });
   };
 }
