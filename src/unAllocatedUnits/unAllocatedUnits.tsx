@@ -11,6 +11,8 @@ class UnAllocatedUnits extends React.Component {
     const columns = [
       {
         dataIndex: "name",
+        key: "name",
+        render: (text: any) => <a href="javascript:;">{text}</a>,
         sorter: (a: any, b: any) => a.name.length - b.name.length,
         title: "SKU Name"
       },

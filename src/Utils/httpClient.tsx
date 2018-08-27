@@ -15,7 +15,7 @@ const httpClient = {
       error => {
         if (error.response.status === 403 || error.response.status === 401) {
           localStorage.removeItem("sessionKey");
-          window.location.href = "/login";
+          window.location.href = "/indents";
         }
         return Promise.reject(error);
       }

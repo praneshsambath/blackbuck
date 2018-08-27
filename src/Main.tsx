@@ -18,7 +18,7 @@ import Dashboard from "./dashboard/dashboard";
 import Indents from "./indents/indents";
 import "./Main.css";
 import Product from "./product/product";
-import Transporter from "./transporter/transporter";
+import Transporter from "./transporter/Transporter";
 import TruckType from "./truckType/truckType";
 import UnAllocatedUnits from "./unAllocatedUnits/unAllocatedUnits";
 

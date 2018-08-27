@@ -13,13 +13,10 @@ class TruckType extends React.Component {
 
   public render() {
     const columns = [
-      // {
-      //   dataIndex: "name",
-      //   sorter: (a: any, b: any) => a.name.length - b.name.length,
-      //   title: "Name"
-      // },
       {
         dataIndex: "id",
+        key: "id",
+        render: (text: any) => <a href="javascript:;">{text}</a>,
         sorter: (a: any, b: any) => a.id - b.id,
         title: "ID"
       },

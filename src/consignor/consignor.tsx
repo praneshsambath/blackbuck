@@ -1,11 +1,14 @@
-import { Button, Col, Modal, Row, Table } from "antd";
+import { Button, Col, Row, Table } from "antd";
 import * as React from "react";
-// import './transporter.css';
-// import { Link } from "react-router-dom";
+import AddModal from "./AddModal";
+import DeleteModal from "./DeleteModal";
+import ViewEditModal from "./ViewEditModal";
 
 class Consignor extends React.Component {
   public state = {
-    consignorDeleteModal: false
+    addModalVisiblity: false,
+    consignorDeleteModal: false,
+    viewEditModalVisiblity: false
   };
   constructor(props: any) {
     super(props);
@@ -15,6 +18,12 @@ class Consignor extends React.Component {
     const columns = [
       {
         dataIndex: "name",
+        key: "name",
+        render: (text: any) => (
+          <a onClick={this.ViewEditModal.bind(this, true)} href="javascript:;">
+            {text}
+          </a>
+        ),
         sorter: (a: any, b: any) => a.name.length - b.name.length,
         title: "Name"
       },
@@ -89,7 +98,11 @@ class Consignor extends React.Component {
         <Row type="flex" justify="space-between" align="middle">
           <Col />
           <Col>
-            <Button type="primary" icon="plus">
+            <Button
+              type="primary"
+              onClick={this.AddModal.bind(this, true)}
+              icon="plus"
+            >
               Add Consignor
             </Button>
             <Button
@@ -111,7 +124,7 @@ class Consignor extends React.Component {
               icon="edit"
             />
             <Button
-              onClick={this.deleteConsignorModal}
+              onClick={this.deleteConsignorModal.bind(this, true)}
               ghost={true}
               type="primary"
               style={{ marginLeft: 12 }}
@@ -124,39 +137,40 @@ class Consignor extends React.Component {
           dataSource={data}
           rowSelection={rowSelection}
         />
-        <Modal
-          title="Delete Consignor"
-          visible={this.state.consignorDeleteModal}
-          onOk={this.DeleteConsignor}
-          onCancel={this.cancelDeleteConsignorModal}
-          okText="Delete"
-          okType="primary"
-        >
-          <b>Are You Sure You want to delete Consignor?</b>
-          <br />
-          <span>
-            Deleting the selected Consignor will remove all the details related
-            to the Consignor
-          </span>
-        </Modal>
+        {this.state.consignorDeleteModal ? (
+          <DeleteModal
+            DeleteModal={this.deleteConsignorModal}
+            visible={this.state.consignorDeleteModal}
+          />
+        ) : null}
+        {this.state.viewEditModalVisiblity ? (
+          <ViewEditModal
+            visible={this.state.viewEditModalVisiblity}
+            viewEditModal={this.ViewEditModal}
+          />
+        ) : null}
+        {this.state.addModalVisiblity ? (
+          <AddModal
+            AddModal={this.AddModal}
+            visible={this.state.addModalVisiblity}
+          />
+        ) : null}
       </div>
     );
   }
-  private deleteConsignorModal = () => {
+  private deleteConsignorModal = (isVisible: boolean) => {
     this.setState({
-      consignorDeleteModal: true
+      consignorDeleteModal: isVisible
     });
   };
-  private DeleteConsignor = () => {
-    console.log("delete");
+  private ViewEditModal = (isVisible: boolean) => {
     this.setState({
-      consignorDeleteModal: false
+      viewEditModalVisiblity: isVisible
     });
   };
-  private cancelDeleteConsignorModal = () => {
-    console.log("cancel");
+  private AddModal = (isVisible: boolean) => {
     this.setState({
-      consignorDeleteModal: false
+      addModalVisiblity: isVisible
     });
   };
 }
