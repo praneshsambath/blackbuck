@@ -1,6 +1,8 @@
 import { Col, Form, Input, Modal, Row } from "antd";
 import { WrappedFormUtils } from "antd/lib/form/Form";
 import * as React from "react";
+import baseUrl from "../common/baseUrl";
+import httpClient from "../Utils/httpClient";
 import "./consignor.css";
 const FormItem = Form.Item;
 interface IProps {
@@ -14,7 +16,6 @@ class EditModal extends React.Component<IProps> {
     super(props);
   }
   public render() {
-    console.log(this.props.dataToDisplay);
     const { getFieldDecorator } = this.props.form;
     return (
       <Modal
@@ -70,6 +71,20 @@ class EditModal extends React.Component<IProps> {
                 })(<Input placeholder="Enter State" />)}
               </FormItem>
             </Col>
+            {/* <Col span={12}>
+              <FormItem label="Location">
+                {getFieldDecorator("location_name", {
+                  initialValue: this.props.dataToDisplay[0].state_name,
+                  rules: [
+                    {
+                      message: "Location is required",
+                      required: true
+                    }
+                  ],
+                  validateTrigger: ["onChange", "onBlur"]
+                })(<Input placeholder="Enter Location" />)}
+              </FormItem>
+            </Col> */}
             <Col span={12}>
               <FormItem label="Sub Location">
                 {getFieldDecorator("sublocation_name", {
@@ -121,7 +136,13 @@ class EditModal extends React.Component<IProps> {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err: any, values: any) => {
       if (!err) {
-        console.log(values);
+        httpClient
+          .getInstance()
+          .put(
+            baseUrl + "/ims/depository/v1/" + this.props.dataToDisplay[0].id,
+            this.props.dataToDisplay[0]
+          )
+          .then(res => console.log(res));
       } else {
         alert("error on submit");
       }
