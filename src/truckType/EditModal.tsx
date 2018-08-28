@@ -3,18 +3,19 @@ import { WrappedFormUtils } from "antd/lib/form/Form";
 import * as React from "react";
 import baseUrl from "../common/baseUrl";
 import httpClient from "../Utils/httpClient";
-import "./consignee.css";
+import "./truckType.css";
 const FormItem = Form.Item;
 const Option = Select.Option;
 interface IProps {
   visible: boolean;
   EditModal: any;
+  getTableData:any;
   form: WrappedFormUtils;
   dataToDisplay: any;
 }
 export interface IRecord {
   id: number;
-  name: string;
+  bodyType: string;
 }
 
 interface IState {
@@ -25,6 +26,7 @@ interface IState {
 class EditModal extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
+    this.state = { data: [], fetching: false, onSearch: [] };
   }
 
   public componentDidMount() {
@@ -34,11 +36,11 @@ class EditModal extends React.Component<IProps, IState> {
   public searchStates() {
     httpClient
       .getInstance()
-      .get(baseUrl + "/ims/location/v1/state/search?q=")
+      .get(baseUrl + "/ims/trucktype/v1/master")
       .then(res => {
         const search = res.data.map((w: IRecord) => ({
           id: w.id,
-          name: w.name
+          name: w.bodyType
         }));
 
         this.setState({ onSearch: search });
@@ -49,7 +51,7 @@ class EditModal extends React.Component<IProps, IState> {
     const { getFieldDecorator } = this.props.form;
     return (
       <Modal
-        title="Edit Consignee"
+        title="Edit Truck Type"
         visible={this.props.visible}
         style={{ top: 30 }}
         onOk={this.submitButton}
@@ -60,40 +62,40 @@ class EditModal extends React.Component<IProps, IState> {
         <Form>
           <Row gutter={24}>
             <Col span={12}>
-              <FormItem label="Consignee Code">
-                {getFieldDecorator("code", {
-                  initialValue: this.props.dataToDisplay[0].code,
+              <FormItem label="Truck Type">
+                {getFieldDecorator("truck_type", {
+                  initialValue: this.props.dataToDisplay[0].truckType,
                   rules: [
                     {
-                      message: "Consignee Code is required",
+                      message: "Truck Type ID is required",
                       required: true
                     }
                   ],
                   validateTrigger: ["onChange", "onBlur"]
-                })(<Input disabled={true} placeholder="Consignee Code" />)}
+                })(<Input disabled={true} placeholder="Truck Type" />)}
               </FormItem>
             </Col>
             <Col span={12}>
-              <FormItem label="Consignee Name">
-                {getFieldDecorator("name", {
-                  initialValue: this.props.dataToDisplay[0].name,
+              <FormItem label="Carrying Capacity">
+                {getFieldDecorator("tonnage", {
+                  initialValue: this.props.dataToDisplay[0].tonnage,
                   rules: [
                     {
-                      message: "Consignee Name is required",
+                      message: "Carrying Capacity is required",
                       required: true
                     }
                   ],
                   validateTrigger: ["onChange", "onBlur"]
-                })(<Input placeholder="Consignee Name" />)}
+                })(<Input placeholder="Carrying Capacity" />)}
               </FormItem>
             </Col>
             <Col span={12}>
-              <FormItem label="State">
-                {getFieldDecorator("state_name", {
-                  initialValue: this.props.dataToDisplay[0].state_name,
+              <FormItem label="Body Type">
+                {getFieldDecorator("body_type", {
+                  initialValue: this.props.dataToDisplay[0].bodyType,
                   rules: [
                     {
-                      message: "State is required",
+                      message: "Body Type is required",
                       required: true
                     }
                   ],
@@ -101,13 +103,13 @@ class EditModal extends React.Component<IProps, IState> {
                 })(<Select
                   showSearch={true}
                   style={{ width: 200 }}
-                  placeholder="Select a State"
+                  placeholder="Select Body Type"
                   optionFilterProp="children"
                   onSelect={this.onTypeSearch}
                 >
                   {this.state.onSearch.map((statesName: any) => {
                     return (
-                      <Option key={statesName.id} value={statesName.id}>
+                      <Option key={statesName.id} value={statesName.bodyType}>
                         {statesName.name}
                       </Option>
                     );
@@ -116,53 +118,24 @@ class EditModal extends React.Component<IProps, IState> {
               </FormItem>
             </Col>
             <Col span={12}>
-              <FormItem label="Sub Location">
-                {getFieldDecorator("sublocation_name", {
-                  initialValue: this.props.dataToDisplay[0].sublocation_name,
+              <FormItem label="Body Length">
+                {getFieldDecorator("length", {
+                  initialValue: this.props.dataToDisplay[0].length,
                   rules: [
                     {
-                      message: "Sub Location is required",
+                      message: "Body Length is required",
                       required: true
                     }
                   ],
                   validateTrigger: ["onChange", "onBlur"]
-                })(<Input placeholder="Enter Sub Location" />)}
+                })(<Input placeholder="Enter Body Length" />)}
               </FormItem>
-            </Col>
-            <Col span={12}>
-              <FormItem label="Latitude">
-                {getFieldDecorator("latitude", {
-                  initialValue: this.props.dataToDisplay[0].latitude,
-                  rules: [
-                    {
-                      message: "Field is required",
-                      required: true
-                    }
-                  ],
-                  validateTrigger: ["onChange", "onBlur"]
-                })(<Input disabled={true} placeholder="Enter Latitude" />)}
-              </FormItem>
-            </Col>
-            <Col span={12}>
-              <FormItem label="Longitude">
-                {getFieldDecorator("logitude", {
-                  initialValue: this.props.dataToDisplay[0].longitude,
-                  rules: [
-                    {
-                      message: "Field is required",
-                      required: true
-                    }
-                  ],
-                  validateTrigger: ["onChange", "onBlur"]
-                })(<Input disabled={true} placeholder="Enter Longitude" />)}
-              </FormItem>
-            </Col>
+            </Col>            
           </Row>
         </Form>
       </Modal>
     );
   }
-
   private onTypeSearch = (value: string) => {
     this.setState({ onSearch: [], fetching: true });
   };
@@ -173,10 +146,16 @@ class EditModal extends React.Component<IProps, IState> {
         httpClient
           .getInstance()
           .put(
-            baseUrl + "/ims/depository/v1/" + this.props.dataToDisplay[0].id,
+            baseUrl + "/ims/trucktype/v1/master/" + this.props.dataToDisplay[0].id,
             values
           )
-          .then(res => console.log(res));
+          .then(res => {
+            console.log(res.data)
+            if(res.data.message === "Master Truck Type updated successfuly")
+            {
+              this.props.getTableData();
+            }
+          });
       } else {
         console.log('res')
       }

@@ -1,7 +1,7 @@
 import { Col, Form, Modal, Row } from "antd";
 import { WrappedFormUtils } from "antd/lib/form/Form";
 import * as React from "react";
-import "./consignee.css";
+import "./truckType.css";
 // const FormItem = Form.Item;
 interface IProps {
   visible: boolean;
@@ -18,7 +18,7 @@ class ViewModal extends React.Component<IProps> {
     // const { getFieldDecorator } = this.props.form;
     return (
       <Modal
-        title="View Consignee"
+        title="View Truck Type"
         visible={this.props.visible}
         onOk={this.submitButton}
         onCancel={this.cancelButton}
@@ -40,11 +40,11 @@ class ViewModal extends React.Component<IProps> {
                   validateTrigger: ["onChange", "onBlur"]
                 })(<Input disabled={true} placeholder="Consignee ID" />)}*/}
               <div>
-                <h4 className="label">Consignee Code</h4>
+                <h4 className="label">Truk Type ID</h4>
               </div>
               <div>
                 <span className="viewData">
-                  {this.props.dataToDisplay.code}
+                  {this.props.dataToDisplay.id}
                 </span>
               </div>
               {/* </FormItem> */}
@@ -62,11 +62,11 @@ class ViewModal extends React.Component<IProps> {
                   validateTrigger: ["onChange", "onBlur"]
                 })(<Input disabled={true} placeholder="Consignee Name" />)} */}
               <div>
-                <h4 className="label">Consignee Name</h4>
+                <h4 className="label">Carrying Capacity</h4>
               </div>
               <div>
                 <span className="viewData">
-                  {this.props.dataToDisplay.name}
+                  {this.props.dataToDisplay.tonnage}
                 </span>
               </div>
               {/* </FormItem> */}
@@ -87,11 +87,11 @@ class ViewModal extends React.Component<IProps> {
                   validateTrigger: ["onChange", "onBlur"]
                 })(<Input placeholder="Enter State" />)}*/}
               <div>
-                <h4 className="label">State</h4>
+                <h4 className="label">Bpdy Type</h4>
               </div>
               <div>
                 <span className="viewData">
-                  {this.props.dataToDisplay.state_name}
+                  {this.props.dataToDisplay.bodyType}
                 </span>
               </div>
               {/* </FormItem> */}
@@ -109,88 +109,18 @@ class ViewModal extends React.Component<IProps> {
                   validateTrigger: ["onChange", "onBlur"]
                 })(<Input placeholder="Enter City" />)}*/}
               <div>
-                <h4 className="label">Location</h4>
+                <h4 className="label">Body Length</h4>
               </div>
               <div>
                 <span className="viewData">
-                  {this.props.dataToDisplay.location_name}
+                  {this.props.dataToDisplay.length}
                 </span>
               </div>
               {/* </FormItem> */}
             </Col>
           </Row>
-          <br />
-          <Row gutter={24}>
-            <Col span={12}>
-              {/* <FormItem label="Sub Location"> */}
-              {/*  {getFieldDecorator("subLocation", {
-                  // initialValue: "NAme",
-                  rules: [
-                    {
-                      message: "Field is required",
-                      required: true
-                    }
-                  ],
-                  validateTrigger: ["onChange", "onBlur"]
-                })(<Input placeholder="Enter Sub Location" />)}*/}
-              <div>
-                <h4 className="label">Sub Location</h4>
-              </div>
-              <div>
-                <span className="viewData">
-                  {this.props.dataToDisplay.sublocation_name}
-                </span>
-              </div>
-              {/* </FormItem> */}
-            </Col>
-          </Row>
-          <br/>
-          <Row gutter={24}>
-            <Col span={12}>
-              {/* <FormItem label="Latitude"> */}
-              {/* {getFieldDecorator("latitude", {
-                  // initialValue: "NAme",
-                  rules: [
-                    {
-                      message: "Field is required",
-                      required: true
-                    }
-                  ],
-                  validateTrigger: ["onChange", "onBlur"]
-                })(<Input placeholder="Enter Latitude" />)} */}
-              <div>
-                <h4 className="label">Latitude</h4>
-              </div>
-              <div>
-                <span className="viewData">
-                  {this.props.dataToDisplay.latitude}
-                </span>
-              </div>
-              {/* </FormItem> */}
-            </Col>
-            <Col span={12}>
-              {/* <FormItem label="Longitude"> */}
-              {/* {getFieldDecorator("logitude", {
-                  // initialValue: "NAme",
-                  rules: [
-                    {
-                      message: "Field is required",
-                      required: true
-                    }
-                  ],
-                  validateTrigger: ["onChange", "onBlur"]
-                })(<Input placeholder="Enter Longitude" />)}*/}
-              <div>
-                <h4 className="label">Longitude</h4>
-              </div>
-              <div>
-                <span className="viewData">
-                  {this.props.dataToDisplay.longitude}
-                </span>
-              </div>
-              {/* </FormItem> */}
-            </Col>
-          </Row>
+          <br />        
+          
         </Form>
       </Modal>
     );

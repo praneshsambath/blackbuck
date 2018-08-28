@@ -1,5 +1,5 @@
 /* global google */
-declare const google: any;
+// declare const google: any;
 import { Col, Form, Input, Modal, Row, Select } from "antd";
 import { WrappedFormUtils } from "antd/lib/form/Form";
 import * as React from "react";
@@ -9,11 +9,12 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 export interface IRecord {
   id: number;
-  name: string;
+  bodyType: string;
 }
 interface IProps {
   visible: boolean;
   AddModal: any;
+  getTableData:any;  
   form: WrappedFormUtils;
 }
 interface IState {
@@ -30,6 +31,8 @@ class AddModal extends React.Component<IProps, IState> {
     this.state = { data: [], fetching: false, onSearch: [] };
   }
   public componentDidMount() {
+    // this.setState({ onSearch : [{id: 1, }];  });
+    
     // const googleAutocomplete = document.getElementById("location_name");
     // console.log(googleAutocomplete)
     // const autocomplete = new google.maps.places.Autocomplete(
@@ -38,39 +41,39 @@ class AddModal extends React.Component<IProps, IState> {
     // console.log(googleAutocomplete);
     // autocomplete.addListener("place_changed", this.handlePlaceChange);
     // autocomplete.setComponentRestrictions({ country: ["in"] });
-    this.googlePlaces();
+    // this.googlePlaces();
     this.searchStates();
   }
 
   public searchStates() {
     httpClient
       .getInstance()
-      .get(baseUrl + "/ims/location/v1/state/search?q=")
+      .get(baseUrl + "/ims/trucktype/v1/master")
       .then(res => {
         const search = res.data.map((w: IRecord) => ({
           id: w.id,
-          name: w.name
+          name: w.bodyType
         }));
 
         this.setState({ onSearch: search, fetching: false });
       });
   }
-  public googlePlaces() {
-    const googleAutocomplete = document.getElementById("location_name");
-    console.log(googleAutocomplete);
-    const autocomplete = new google.maps.places.Autocomplete(
-      googleAutocomplete
-    );
-    console.log(googleAutocomplete);
-    autocomplete.addListener("place_changed", this.handlePlaceChange);
-    autocomplete.setComponentRestrictions({ country: ["in"] });
-  }
+  // public googlePlaces() {
+  //   const googleAutocomplete = document.getElementById("location_name");
+  //   console.log(googleAutocomplete);
+  //   const autocomplete = new google.maps.places.Autocomplete(
+  //     googleAutocomplete
+  //   );
+  //   console.log(googleAutocomplete);
+  //   autocomplete.addListener("place_changed", this.handlePlaceChange);
+  //   autocomplete.setComponentRestrictions({ country: ["in"] });
+  // }
 
   public render() {
     const { getFieldDecorator } = this.props.form;
     return (
       <Modal
-        title="Add Consignee"
+        title="Add Truck Type"
         style={{ top: 20 }}
         visible={this.props.visible}
         onOk={this.submitButton}
@@ -81,22 +84,22 @@ class AddModal extends React.Component<IProps, IState> {
         <Form>
           <Row gutter={24}>
             <Col span={12}>
-              <FormItem label="Consignee Code">
-                {getFieldDecorator("code", {
+              <FormItem label="Truck Type ID">
+                {getFieldDecorator("truck_type", {
                   // initialValue: "NAme",
                   rules: [
                     {
-                      message: "Consignee Code is required",
+                      message: "Truck Type ID is required",
                       required: true
                     }
                   ],
                   validateTrigger: ["onChange", "onBlur"]
-                })(<Input placeholder="Consignee Code" />)}
+                })(<Input placeholder="Truck Type ID" />)}
               </FormItem>
             </Col>
             <Col span={12}>
-              <FormItem label="Consignee Name">
-                {getFieldDecorator("name", {
+              <FormItem label="Carrying Capacity">
+                {getFieldDecorator("tonnage", {
                   // initialValue: "NAme",
                   rules: [
                     {
@@ -105,12 +108,12 @@ class AddModal extends React.Component<IProps, IState> {
                     }
                   ],
                   validateTrigger: ["onChange", "onBlur"]
-                })(<Input placeholder="Consignee Name" />)}
+                })(<Input placeholder="Carrying Capacity" />)}
               </FormItem>
             </Col>
             <Col span={12}>
-              <FormItem label="State">
-                {/* {getFieldDecorator("state_name", {
+              <FormItem label="Body Type">
+                {getFieldDecorator("body_type", {
                   // initialValue: "NAme",
                   rules: [
                     {
@@ -119,12 +122,12 @@ class AddModal extends React.Component<IProps, IState> {
                     }
                   ],
                   validateTrigger: ["onChange", "onBlur"]
-                })(<Input placeholder="Enter State" />)} */}
+                })(
 
                 <Select
                   showSearch={true}
                   style={{ width: 200 }}
-                  placeholder="Select a State"
+                  placeholder="Select Body Type"
                   optionFilterProp="children"
                   // onChange={this.onTypeSearch}
                   onSelect = {this.onTypeSearch}
@@ -133,12 +136,12 @@ class AddModal extends React.Component<IProps, IState> {
                 >
                   {this.state.onSearch.map((statesName: any) => {
                     return (
-                      <Option key={statesName.id} value={statesName.id}>
+                      <Option key={statesName.id} value={statesName.name}>
                         {statesName.name}
                       </Option>
                     );
                   })}
-                </Select>
+                </Select>)}
               </FormItem>
             </Col>
             {/* <Col span={12}>
@@ -156,8 +159,8 @@ class AddModal extends React.Component<IProps, IState> {
               </FormItem>
             </Col> */}
             <Col span={12}>
-              <FormItem label="Sub Location">
-                {getFieldDecorator("sublocation_name", {
+              <FormItem label="Body Length">
+                {getFieldDecorator("length", {
                   // initialValue: "NAme",
                   rules: [
                     {
@@ -166,63 +169,41 @@ class AddModal extends React.Component<IProps, IState> {
                     }
                   ],
                   validateTrigger: ["onChange", "onBlur"]
-                })(<Input placeholder="Enter Sub Location" />)}
+                })(<Input placeholder="Enter Body Length in Feet" />)}
               </FormItem>
             </Col>
           </Row>
-          <Row gutter={24}>
-            <Col span={12}>
-              <FormItem label="Latitude">
-                {getFieldDecorator("latitude", {
-                  // initialValue: "NAme",
-                  rules: [
-                    {
-                      message: "Field is required",
-                      required: true
-                    }
-                  ],
-                  validateTrigger: ["onChange", "onBlur"]
-                })(<Input placeholder="Enter Latitude" />)}
-              </FormItem>
-            </Col>
-            <Col span={12}>
-              <FormItem label="Longitude">
-                {getFieldDecorator("longitude", {
-                  // initialValue: "NAme",
-                  rules: [
-                    {
-                      message: "Field is required",
-                      required: true
-                    }
-                  ],
-                  validateTrigger: ["onChange", "onBlur"]
-                })(<Input placeholder="Enter Longitude" />)}
-              </FormItem>
-            </Col>
-          </Row>
+         
         </Form>
       </Modal>
     );
   }
   private onTypeSearch = (value: string) => {
-    this.setState({ onSearch: [], fetching: true });
+    // this.setState({ onSearch: [], fetching: true });
+    console.log(value)
   };
 
   private handleCustomerChange = (value: any) => {
     console.log(value);
   };
   
-  private handlePlaceChange = (e: any) => {
-    console.log(e.target.value);
-  };
+  // private handlePlaceChange = (e: any) => {
+  //   console.log(e.target.value);
+  // };
   private submitButton = (e: any) => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err: any, values: any) => {
       if (!err) {
+        console.log(values)
         httpClient
           .getInstance()
-          .put(baseUrl + "/ims/depository/v1", values)
-          .then(res => console.log(res));
+          .post(baseUrl + "/ims/trucktype/v1/master", values)
+          .then(res =>{
+            if(res.data.message === "Master truck type added successfully")
+            {
+              this.props.getTableData();
+            }
+          });
         this.props.AddModal(false);
       } else {
         console.log("error on submit");

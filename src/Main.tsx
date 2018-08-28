@@ -79,7 +79,7 @@ class Main extends React.Component<IProps, IState> {
             <Menu.Item key="/unAllocatedUnits">
               <Link to="/unAllocatedUnits">
                 <Icon type="profile" />
-                <span>Un Allocated Units</span>
+                <span>Unallocated Units</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="/consignor">
