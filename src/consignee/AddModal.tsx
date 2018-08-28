@@ -227,7 +227,7 @@ class AddModal extends React.Component<IProps, IState> {
           .then(res => console.log(res));
         this.props.AddModal(false);
       } else {
-        alert("error on submit");
+        console.log("error on submit");
       }
     });
     this.props.AddModal(false);

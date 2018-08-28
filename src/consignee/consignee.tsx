@@ -151,10 +151,11 @@ class Consignee extends React.Component {
           dataSource={this.state.data}
           rowSelection={rowSelection}
         />
-        {this.state.ConsigneeDeleteModal ? (
+       {this.state.ConsigneeDeleteModal ? (
           <DeleteModal
             DeleteModal={this.deleteConsigneeModal}
             visible={this.state.ConsigneeDeleteModal}
+            dataToDelete={this.state.EditData}
           />
         ) : null}
         {this.state.ViewModalVisiblity ? (
