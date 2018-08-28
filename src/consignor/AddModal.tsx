@@ -137,24 +137,32 @@ class AddModal extends React.Component<IProps, IState> {
                     );
                   })}
                 </Select> */}
-                <Select
-                  showSearch={true}
-                  style={{ width: 200 }}
-                  placeholder="Select a State"
-                  optionFilterProp="children"
-                  // onChange={this.onTypeSearch}
-                  onSelect = {this.onTypeSearch}
-                  // onFocus={this.handleFocus}
-                  // onBlur={this.handleBlur}
-                >
-                  {this.state.onSearch.map((statesName: any) => {
-                    return (
-                      <Option key={statesName.id} value={statesName.id}>
-                        {statesName.name}
-                      </Option>
-                    );
-                  })}
-                </Select>
+                {getFieldDecorator("location_name", {
+                  // initialValue: "NAme",
+                  rules: [
+                    {
+                      message: "Field is required",
+                      required: true
+                    }
+                  ],
+                  validateTrigger: ["onChange", "onBlur"]
+                })(
+                  <Select
+                    showSearch={true}
+                    style={{ width: 200 }}
+                    placeholder="Select a State"
+                    optionFilterProp="children"
+                    onSelect={this.onTypeSearch}
+                  >
+                    {this.state.onSearch.map((statesName: any) => {
+                      return (
+                        <Option key={statesName.id} value={statesName.id}>
+                          {statesName.name}
+                        </Option>
+                      );
+                    })}
+                  </Select>
+                )}
               </FormItem>
             </Col>
             {/* <Col span={12}>
@@ -220,8 +228,8 @@ class AddModal extends React.Component<IProps, IState> {
       </Modal>
     );
   }
-  private onTypeSearch = (value: string) => {
-    this.setState({ onSearch: [], fetching: true });
+  private onTypeSearch = (value: any) => {
+    console.log(value);
   };
 
   private handleCustomerChange = (value: any) => {
