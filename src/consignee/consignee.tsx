@@ -1,9 +1,12 @@
 import { Button, Col, Row, Table } from "antd";
 import * as React from "react";
+import baseUrl from "./../common/baseUrl";
+import httpClient from "./../Utils/httpClient";
 import AddModal from "./AddModal";
 import DeleteModal from "./DeleteModal";
 import EditModal from "./EditModal";
 import ViewModal from "./ViewModal";
+
 // import './transporter.css';
 // import { Link } from "react-router-dom";
 export interface IRecord {
@@ -31,6 +34,18 @@ class Consignee extends React.Component {
   constructor(props: any) {
     super(props);
   }
+
+  public componentDidMount() {
+    httpClient
+      .getInstance()
+      .get(baseUrl + "/ims/depository/v1?depositoryType=CONSIGNEE")
+      .then(
+        res => res.data.map((r: IRecord) => ({ key: r.id, ...r }))
+        // console.log({ key: r.id, r })
+      )
+      .then((data: IRecord) => this.setState({ data }));
+  }
+
   public ViewingRow(row: any) {
     this.setState({
       sendDataToViewChild: row
@@ -52,57 +67,30 @@ class Consignee extends React.Component {
         title: "ID"
       },
       {
-        dataIndex: "state",
+        dataIndex: "state_name",
         sorter: (a: any, b: any) => a.state.length - b.state.length,
         title: "State"
       },
+      // {
+      //   dataIndex: "location_name",
+      //   sorter: (a: any, b: any) => a.city.length - b.city.length,
+      //   title: "Location"
+      // },
       {
-        dataIndex: "city",
-        sorter: (a: any, b: any) => a.city.length - b.city.length,
-        title: "City"
-      },
-      {
-        dataIndex: "subLocation",
+        dataIndex: "sublocation_name",
         sorter: (a: any, b: any) => a.subLocation.length - b.subLocation.length,
         title: "Sub Location"
       },
       {
-        dataIndex: "latitudeLongitude",
-        title: "Lat / Long"
-      }
-    ];
-    const data = [
-      {
-        city: "Bangalore",
-        id: "101",
-        key: "1",
-        latitudeLongitude: (
-          <span>
-            {85.9586}
-            <span style={{ fontWeight: "bolder" }}>&nbsp;/&nbsp;</span>
-            {96.4587}
-          </span>
-        ),
-        name: "Merry",
-        state: "Andhra Pradesh",
-        subLocation: "BTM"
+        dataIndex: "latitude",
+        title: "Latitude"
       },
       {
-        city: "Mysore",
-        id: "102",
-        key: "2",
-        latitudeLongitude: (
-          <span>
-            {13.9716}
-            <span style={{ fontWeight: "bolder" }}>&nbsp;/&nbsp;</span>
-            {67.5946}
-          </span>
-        ),
-        name: "Pretty",
-        state: "Karnataka",
-        subLocation: "JaiNagar"
+        dataIndex: "longitude",
+        title: "Longitude"
       }
     ];
+    
     const rowSelection = {
       onChange: (selectedRowKeys: any, selectedRows: any) => {
         this.isEditDeleteVisiblity(selectedRows);
@@ -160,7 +148,7 @@ class Consignee extends React.Component {
         </Row>
         <Table
           columns={columns}
-          dataSource={data}
+          dataSource={this.state.data}
           rowSelection={rowSelection}
         />
         {this.state.ConsigneeDeleteModal ? (
