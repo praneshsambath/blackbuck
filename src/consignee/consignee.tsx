@@ -1,22 +1,48 @@
-import { Button, Col, Modal, Row, Table } from "antd";
+import { Button, Col, Row, Table } from "antd";
 import * as React from "react";
+import AddModal from "./AddModal";
+import DeleteModal from "./DeleteModal";
+import EditModal from "./EditModal";
+import ViewModal from "./ViewModal";
 // import './transporter.css';
 // import { Link } from "react-router-dom";
-
+export interface IRecord {
+  id: number;
+  name: string;
+  state: string;
+  city: string;
+  subLocation: string;
+  latitudeLongitude: string;
+}
 class Consignee extends React.Component {
-  public state = {
-    deleteConsigneeModal: false
+  public state = {  
+    ConsigneeDeleteModal: false, 
+    EditData: {},        
+    EditModalVisiblity: false,
+    ViewModalVisiblity: false,
+    addModalVisiblity: false,    
+    data: [],
+    // deleteConsigneeModal: false,
+    isDelete: true,
+    isEdit: true,
+    sendDataToViewChild: {},
+    
   };
   constructor(props: any) {
     super(props);
   }
-
+  public ViewingRow(row: any) {
+    this.setState({
+      sendDataToViewChild: row
+    });
+    this.ViewModal(true);
+  }
   public render() {
     const columns = [
       {
         dataIndex: "name",
         key: "name",
-        render: (text: any) => <a href="javascript:;">{text}</a>,
+        render: (text: any,row: any) => <a onClick={this.ViewingRow.bind(this, row)} href="javascript:;">{text}</a>,
         sorter: (a: any, b: any) => a.name.length - b.name.length,
         title: "Name"
       },
@@ -79,6 +105,10 @@ class Consignee extends React.Component {
     ];
     const rowSelection = {
       onChange: (selectedRowKeys: any, selectedRows: any) => {
+        this.isEditDeleteVisiblity(selectedRows);
+        this.setState({
+          EditData: selectedRows
+        });
         console.log(
           `selectedRowKeys: ${selectedRowKeys}`,
           "selectedRows: ",
@@ -91,7 +121,11 @@ class Consignee extends React.Component {
         <Row type="flex" justify="space-between" align="middle">
           <Col />
           <Col>
-            <Button type="primary" icon="plus">
+            <Button
+              type="primary"
+              onClick={this.AddModal.bind(this, true)}
+              icon="plus"
+            >
               Add Consignee
             </Button>
             <Button
@@ -107,13 +141,16 @@ class Consignee extends React.Component {
               icon="upload"
             />
             <Button
+              onClick={this.EditModal.bind(this, true)}
               ghost={true}
+              disabled={this.state.isEdit}
               type="primary"
               style={{ marginLeft: 12 }}
               icon="edit"
             />
             <Button
-              onClick={this.deleteConsigneeModal}
+              onClick={this.deleteConsigneeModal.bind(this, true)}
+              disabled={this.state.isDelete}
               ghost={true}
               type="primary"
               style={{ marginLeft: 12 }}
@@ -126,39 +163,72 @@ class Consignee extends React.Component {
           dataSource={data}
           rowSelection={rowSelection}
         />
-        <Modal
-          title="Delete Consignee"
-          visible={this.state.deleteConsigneeModal}
-          onOk={this.DeleteConsignee}
-          onCancel={this.cancelDeleteConsigneeModal}
-          okText="Delete"
-          okType="primary"
-        >
-          <b>Are You Sure You want to delete Consignee?</b>
-          <br />
-          <span>
-            Deleting the selected Consignee will remove all the details related
-            to the Consignee
-          </span>
-        </Modal>
+        {this.state.ConsigneeDeleteModal ? (
+          <DeleteModal
+            DeleteModal={this.deleteConsigneeModal}
+            visible={this.state.ConsigneeDeleteModal}
+          />
+        ) : null}
+        {this.state.ViewModalVisiblity ? (
+          <ViewModal
+            visible={this.state.ViewModalVisiblity}
+            ViewModal={this.ViewModal}
+            dataToDisplay={this.state.sendDataToViewChild}
+          />
+        ) : null}
+        {this.state.addModalVisiblity ? (
+          <AddModal
+            AddModal={this.AddModal}
+            visible={this.state.addModalVisiblity}
+          />
+        ) : null}
+        {this.state.EditModalVisiblity ? (
+          <EditModal
+            dataToDisplay={this.state.EditData}
+            EditModal={this.EditModal}
+            visible={this.state.EditModalVisiblity}
+          />
+        ) : null}
       </div>
     );
   }
-  private deleteConsigneeModal = () => {
+  
+  private isEditDeleteVisiblity = (selectedRows: any[]) => {
+    if (selectedRows.length === 1) {
+      this.setState({
+        isDelete: false,
+        isEdit: false
+      });
+    } else if (selectedRows.length >= 1) {
+      this.setState({
+        isDelete: false,
+        isEdit: true
+      });
+    } else {
+      this.setState({
+        isDelete: true,
+        isEdit: true
+      });
+    }
+  };
+  private deleteConsigneeModal = (isVisible: boolean) => {
     this.setState({
-      deleteConsigneeModal: true
+      ConsigneeDeleteModal: isVisible
     });
   };
-  private DeleteConsignee = () => {
-    console.log("delete");
+  private ViewModal = (isVisible: boolean) => {
     this.setState({
-      deleteConsigneeModal: false
+      ViewModalVisiblity: isVisible
     });
   };
-  private cancelDeleteConsigneeModal = () => {
-    console.log("cancel");
+  private EditModal = (isVisible: boolean) => {
     this.setState({
-      deleteConsigneeModal: false
+      EditModalVisiblity: isVisible
+    });
+  };
+  private AddModal = (isVisible: boolean) => {
+    this.setState({
+      addModalVisiblity: isVisible
     });
   };
 }
