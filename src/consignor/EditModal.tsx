@@ -1,39 +1,29 @@
-/* global google */
-declare const google: any;
 import { Col, Form, Input, Modal, Row } from "antd";
 import { WrappedFormUtils } from "antd/lib/form/Form";
 import * as React from "react";
+import "./consignor.css";
 const FormItem = Form.Item;
 interface IProps {
   visible: boolean;
-  AddModal: any;
+  EditModal: any;
   form: WrappedFormUtils;
+  dataToDisplay: any;
 }
-class AddModal extends React.Component<IProps> {
+class EditModal extends React.Component<IProps> {
   constructor(props: IProps) {
     super(props);
   }
-  public componentDidMount() {
-    const googleAutocomplete = document.getElementById("location_name");
-    console.log(googleAutocomplete)
-    const autocomplete = new google.maps.places.Autocomplete(
-      googleAutocomplete
-    );
-    console.log(googleAutocomplete);
-    autocomplete.addListener("place_changed", this.handlePlaceChange);
-    autocomplete.setComponentRestrictions({ country: ["in"] });
-  }
-
   public render() {
+    console.log(this.props.dataToDisplay);
     const { getFieldDecorator } = this.props.form;
     return (
       <Modal
-        title="Add Consignor"
-        style={{ top: 20 }}
+        title="Edit Modal"
         visible={this.props.visible}
+        style={{ top: 30 }}
         onOk={this.submitButton}
         onCancel={this.cancelButton}
-        okText="ADD"
+        okText="Ok"
         okType="primary"
       >
         <Form>
@@ -41,7 +31,7 @@ class AddModal extends React.Component<IProps> {
             <Col span={12}>
               <FormItem label="Consignor Code">
                 {getFieldDecorator("code", {
-                  // initialValue: "NAme",
+                  initialValue: this.props.dataToDisplay[0].code,
                   rules: [
                     {
                       message: "Consignor Code is required",
@@ -49,16 +39,16 @@ class AddModal extends React.Component<IProps> {
                     }
                   ],
                   validateTrigger: ["onChange", "onBlur"]
-                })(<Input placeholder="Consignor Code" />)}
+                })(<Input disabled={true} placeholder="Consignor Code" />)}
               </FormItem>
             </Col>
             <Col span={12}>
               <FormItem label="Consignor Name">
                 {getFieldDecorator("name", {
-                  // initialValue: "NAme",
+                  initialValue: this.props.dataToDisplay[0].name,
                   rules: [
                     {
-                      message: "Field is required",
+                      message: "Consignor Name is required",
                       required: true
                     }
                   ],
@@ -69,10 +59,10 @@ class AddModal extends React.Component<IProps> {
             <Col span={12}>
               <FormItem label="State">
                 {getFieldDecorator("state_name", {
-                  // initialValue: "NAme",
+                  initialValue: this.props.dataToDisplay[0].state_name,
                   rules: [
                     {
-                      message: "Field is required",
+                      message: "State is required",
                       required: true
                     }
                   ],
@@ -81,26 +71,12 @@ class AddModal extends React.Component<IProps> {
               </FormItem>
             </Col>
             <Col span={12}>
-              <FormItem label="Location">
-                {getFieldDecorator("location_name", {
-                  // initialValue: "NAme",
-                  rules: [
-                    {
-                      message: "Field is required",
-                      required: true
-                    }
-                  ],
-                  validateTrigger: ["onChange", "onBlur"]
-                })(<Input placeholder="Enter City" />)}
-              </FormItem>
-            </Col>
-            <Col span={12}>
               <FormItem label="Sub Location">
                 {getFieldDecorator("sublocation_name", {
-                  // initialValue: "NAme",
+                  initialValue: this.props.dataToDisplay[0].sublocation_name,
                   rules: [
                     {
-                      message: "Field is required",
+                      message: "Sub Location is required",
                       required: true
                     }
                   ],
@@ -108,12 +84,10 @@ class AddModal extends React.Component<IProps> {
                 })(<Input placeholder="Enter Sub Location" />)}
               </FormItem>
             </Col>
-          </Row>
-          <Row gutter={24}>
             <Col span={12}>
               <FormItem label="Latitude">
                 {getFieldDecorator("latitude", {
-                  // initialValue: "NAme",
+                  initialValue: this.props.dataToDisplay[0].latitude,
                   rules: [
                     {
                       message: "Field is required",
@@ -121,13 +95,13 @@ class AddModal extends React.Component<IProps> {
                     }
                   ],
                   validateTrigger: ["onChange", "onBlur"]
-                })(<Input placeholder="Enter Latitude" />)}
+                })(<Input disabled={true} placeholder="Enter Latitude" />)}
               </FormItem>
             </Col>
             <Col span={12}>
               <FormItem label="Longitude">
-                {getFieldDecorator("longitude", {
-                  // initialValue: "NAme",
+                {getFieldDecorator("logitude", {
+                  initialValue: this.props.dataToDisplay[0].longitude,
                   rules: [
                     {
                       message: "Field is required",
@@ -135,7 +109,7 @@ class AddModal extends React.Component<IProps> {
                     }
                   ],
                   validateTrigger: ["onChange", "onBlur"]
-                })(<Input placeholder="Enter Longitude" />)}
+                })(<Input disabled={true} placeholder="Enter Longitude" />)}
               </FormItem>
             </Col>
           </Row>
@@ -143,23 +117,19 @@ class AddModal extends React.Component<IProps> {
       </Modal>
     );
   }
-  private handlePlaceChange = (e: any) => {
-    console.log(e.target.value);
-  };
   private submitButton = (e: any) => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err: any, values: any) => {
       if (!err) {
         console.log(values);
-        this.props.AddModal(false);
       } else {
         alert("error on submit");
       }
     });
-    this.props.AddModal(false);
+    this.props.EditModal(false);
   };
   private cancelButton = () => {
-    this.props.AddModal(false);
+    this.props.EditModal(false);
   };
 }
-export default Form.create()(AddModal);
+export default Form.create()(EditModal);

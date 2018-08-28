@@ -42,20 +42,43 @@ class ViewAndEditModal extends React.Component<IProps, IState> {
         cancelButtonProps={{ disabled: !this.state.isEdit }}
       >
         <Form>
-          <Row type="flex" justify="space-between" align="middle" style={{paddingBottom:12}}>
+          <Row
+            type="flex"
+            justify="space-between"
+            align="middle"
+            style={{ paddingBottom: 12 }}
+          >
             <Col />
             <Col>
-            {!this.state.isEdit ? (
-              <Button ghost={true} type="primary" size="small"  icon="close" onClick={this.EditVisiblity}>
-                Cancel
-              </Button>)
-            :null}
+              {!this.state.isEdit ? (
+                <Button
+                  ghost={true}
+                  type="primary"
+                  size="small"
+                  icon="close"
+                  onClick={this.EditVisiblity}
+                >
+                  Cancel
+                </Button>
+              ) : null}
               {this.state.isEdit ? (
-                <Button type="primary" size="small" style={{ marginLeft: 8 }} icon="edit" onClick={this.EditVisiblity}>
+                <Button
+                  type="primary"
+                  size="small"
+                  style={{ marginLeft: 8 }}
+                  icon="edit"
+                  onClick={this.EditVisiblity}
+                >
                   Edit
                 </Button>
               ) : (
-                <Button type="primary" size="small"  style={{ marginLeft: 8 }} icon="save" onClick={this.EditVisiblity}>
+                <Button
+                  type="primary"
+                  size="small"
+                  style={{ marginLeft: 8 }}
+                  icon="save"
+                  onClick={this.EditVisiblity}
+                >
                   Save
                 </Button>
               )}
