@@ -1,19 +1,53 @@
-import { Col, Form, Input, Modal, Row } from "antd";
+import { Col, Form, Input, Modal, Row, Select } from "antd";
 import { WrappedFormUtils } from "antd/lib/form/Form";
 import * as React from "react";
 import baseUrl from "../common/baseUrl";
 import httpClient from "../Utils/httpClient";
 import "./consignor.css";
+
 const FormItem = Form.Item;
+const Option = Select.Option;
+
 interface IProps {
   visible: boolean;
   EditModal: any;
   form: WrappedFormUtils;
   dataToDisplay: any;
 }
-class EditModal extends React.Component<IProps> {
+
+export interface IRecord {
+  id: number;
+  name: string;
+}
+
+interface IState {
+  data: [];
+  onSearch: [];
+}
+
+class EditModal extends React.Component<IProps, IState> {
+    public globalVarStates:any =[] 
   constructor(props: IProps) {
     super(props);
+    this.state = { data: [], onSearch: [] };
+  }
+
+  public componentDidMount() {
+    // this.googlePlaces();
+    this.searchStates();
+  }
+  public searchStates() {
+    httpClient
+      .getInstance()
+      .get(baseUrl + "/ims/location/v1/state/search?q=")
+      .then(res => {
+        const search = res.data.map((w: IRecord) => ({
+          id: w.id,
+          name: w.name
+        }));
+
+        this.setState({ onSearch: search });
+      });
   }
   public render() {
     const { getFieldDecorator } = this.props.form;
@@ -59,16 +93,32 @@ class EditModal extends React.Component<IProps> {
             </Col>
             <Col span={12}>
               <FormItem label="State">
-                {getFieldDecorator("state_name", {
+                {getFieldDecorator("state_id", {
                   initialValue: this.props.dataToDisplay[0].state_name,
                   rules: [
                     {
-                      message: "State is required",
+                      message: "Field is required",
                       required: true
                     }
                   ],
                   validateTrigger: ["onChange", "onBlur"]
-                })(<Input placeholder="Enter State" />)}
+                })(
+                  <Select
+                    showSearch={true}
+                    style={{ width: 200 }}
+                    placeholder="Select a State"
+                    optionFilterProp="children"
+                    // onSelect={this.onTypeSearch}
+                  >
+                    {this.state.onSearch.map((statesName: any) => {
+                      return (
+                        <Option key={statesName.id} value={statesName.id}>
+                          {statesName.name}
+                        </Option>
+                      );
+                    })}
+                  </Select>
+                )}
               </FormItem>
             </Col>
             {/* <Col span={12}>
@@ -115,7 +165,7 @@ class EditModal extends React.Component<IProps> {
             </Col>
             <Col span={12}>
               <FormItem label="Longitude">
-                {getFieldDecorator("logitude", {
+                {getFieldDecorator("longitude", {
                   initialValue: this.props.dataToDisplay[0].longitude,
                   rules: [
                     {
@@ -140,7 +190,7 @@ class EditModal extends React.Component<IProps> {
           .getInstance()
           .put(
             baseUrl + "/ims/depository/v1/" + this.props.dataToDisplay[0].id,
-            this.props.dataToDisplay[0]
+           values
           )
           .then(res => console.log(res));
       } else {
