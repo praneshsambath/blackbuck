@@ -1,14 +1,18 @@
 import { Modal } from "antd";
 import * as React from "react";
+import baseUrl from "../common/baseUrl";
+import httpClient from "../Utils/httpClient";
 interface IProps {
   visible: boolean;
   DeleteModal: any;
+  dataToDelete: any;
 }
 class DeleteModal extends React.Component<IProps> {
   constructor(props: IProps) {
     super(props);
   }
   public render() {
+    console.log(this.props.dataToDelete[0]);
     return (
       <Modal
         title="View Edit Transporter"
@@ -21,13 +25,22 @@ class DeleteModal extends React.Component<IProps> {
         <b>Are You Sure You want to delete Consignor?</b>
         <br />
         <span>
-          Deleting the selected Consignor will remove all the details related
-          to the Consignor
+          Deleting the selected Consignor will remove all the details related to
+          the Consignor
         </span>
       </Modal>
     );
   }
   private submitButton = () => {
+    this.props.dataToDelete[0].is_active = true;
+    console.log(this.props.dataToDelete);
+    httpClient
+      .getInstance()
+      .put(
+        baseUrl + "/ims/depository/v1/" + this.props.dataToDelete[0].id,
+        this.props.dataToDelete[0]
+      )
+      .then(res => console.log(res));
     this.props.DeleteModal(false);
   };
   private cancelButton = () => {

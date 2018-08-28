@@ -153,6 +153,7 @@ class Consignor extends React.Component {
           <DeleteModal
             DeleteModal={this.deleteConsignorModal}
             visible={this.state.consignorDeleteModal}
+            dataToDelete={this.state.EditData}
           />
         ) : null}
         {this.state.ViewModalVisiblity ? (
