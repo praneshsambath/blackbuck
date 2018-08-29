@@ -2,6 +2,20 @@ import { Table, Tag } from "antd";
 import * as React from "react";
 import ViewDisributionRuleModal from "./ViewDisributionRuleModal";
 
+// interface IRecord {
+//   source_sublocation_name: string;
+//   source_location_name: string;
+//   source_state_name: string;
+//   destination_sublocation_name: string;
+//   destination_location_name: string;
+//   destination_state_name: string;
+//   business_share: number;
+//   transporter_name: string;
+//   truck_type: "T2";
+//   start_date: any;
+//   end_date: any;
+// }
+
 class DistributionRule extends React.Component {
   public state = {
     ViewAndEditModalVisiblity: false
@@ -10,7 +24,19 @@ class DistributionRule extends React.Component {
   constructor(props: any) {
     super(props);
   }
-
+  public componentDidMount() {
+    this.getTableData();
+  }
+  public getTableData() {
+    // httpClient
+    //   .getInstance()
+    //   .get(baseUrl + " /ims/distribution/v1")
+    //   .then(res =>
+    //     res.data.distribution.map((r: IRecord) => ({ key: r.id, ...r }))
+    //   )
+    //   .then((data: IRecord) => this.setState({ data }));
+    console.log("asd")
+  }
   public render() {
     const columns = [
       {
@@ -57,41 +83,21 @@ class DistributionRule extends React.Component {
         title: "SOB (%)"
       }
     ];
-    const data = [
-      {
-        destination: "Trichy",
-        id: "101",
-        key: "1",
-        name: "pranesh",
-        sob: "50",
-        source: "500",
-        truckType: "T2-16 MT"
-      },
-      {
-        destination: "karur",
-        id: "102",
-        key: "2",
-        name: "Sampath Kumar",
-        sob: "60",
-        source: "100",
-        truckType: "T2-12 MT"
-      }
-    ];
-    const rowSelection = {
-      onChange: (selectedRowKeys: any, selectedRows: any) => {
-        console.log(
-          `selectedRowKeys: ${selectedRowKeys}`,
-          "selectedRows: ",
-          selectedRows
-        );
-      }
-    };
+    // const rowSelection = {
+    //   onChange: (selectedRowKeys: any, selectedRows: any) => {
+    //     console.log(
+    //       `selectedRowKeys: ${selectedRowKeys}`,
+    //       "selectedRows: ",
+    //       selectedRows
+    //     );
+    //   }
+    // };
     return (
       <div>
         <Table
           columns={columns}
-          dataSource={data}
-          rowSelection={rowSelection}
+          // dataSource={data}
+          // rowSelection={rowSelection}
         />
         {this.state.ViewAndEditModalVisiblity ? (
           <ViewDisributionRuleModal
