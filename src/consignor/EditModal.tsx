@@ -26,9 +26,10 @@ interface IState {
 }
 
 class EditModal extends React.Component<IProps, IState> {
-    public globalVarStates:any =[] 
+  public globalVarStates: any = [];
   constructor(props: IProps) {
     super(props);
+    console.log(props.dataToDisplay)
     this.state = { data: [], onSearch: [] };
   }
 
@@ -190,7 +191,7 @@ class EditModal extends React.Component<IProps, IState> {
           .getInstance()
           .put(
             baseUrl + "/ims/depository/v1/" + this.props.dataToDisplay[0].id,
-           values
+            values
           )
           .then(res => console.log(res));
       } else {

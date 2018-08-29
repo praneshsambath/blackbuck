@@ -1,7 +1,9 @@
 import { Col, Form, Input, Modal, Row } from "antd";
 import { WrappedFormUtils } from "antd/lib/form/Form";
 import * as React from "react";
+import baseUrl from "../../common/baseUrl";
 import DynamicFieldSetWrapper from "../../common/dynamicFieldSetWrapper";
+import httpClient from "../../Utils/httpClient";
 
 const FormItem = Form.Item;
 
@@ -9,6 +11,7 @@ interface IProps {
   AddModal: any;
   visible: boolean;
   form: WrappedFormUtils;
+  getTableData: any;
 }
 
 interface IState {
@@ -47,8 +50,8 @@ class AddModal extends React.Component<IProps, IState> {
         <Form>
           <Row gutter={24}>
             <Col span={12}>
-              <FormItem label="Transporter ID">
-                {getFieldDecorator("id", {
+              <FormItem label="Transporter Code">
+                {getFieldDecorator("code", {
                   // initialValue: "NAme",
                   rules: [
                     {
@@ -90,7 +93,7 @@ class AddModal extends React.Component<IProps, IState> {
             </Col>
             <Col span={12}>
               <FormItem label="Primary Mobile Number">
-                {getFieldDecorator("number", {
+                {getFieldDecorator("phone", {
                   // initialValue: "NAme",
                   rules: [
                     {
@@ -108,7 +111,6 @@ class AddModal extends React.Component<IProps, IState> {
                 onValueChangeSet={this.onValueChangeSecondaryEmail}
                 fieldName="Secondary Email ID"
                 placeholderText="Enter Email"
-                isVisible={false}
               />
             </Col>
             <Col span={12}>
@@ -117,7 +119,6 @@ class AddModal extends React.Component<IProps, IState> {
                 onValueChangeSet={this.onChangeValueSecondaryMobile}
                 fieldName="Secondary Mobile Number"
                 placeholderText="Enter Mobile"
-                isVisible={false}
               />
             </Col>
           </Row>
@@ -129,10 +130,18 @@ class AddModal extends React.Component<IProps, IState> {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err: any, values: any) => {
       if (!err) {
-        // console.log(values);
-        values.secondaryEmail = this.state.secondaryEmail;
-        values.secondaryMobile = this.state.secondaryMobile;
-        console.log(values);
+        values.seconday_communications = {
+          emails: this.state.secondaryEmail,
+          phone_numbers: this.state.secondaryMobile
+        };
+        httpClient
+          .getInstance()
+          .post(baseUrl + "/ims/transporter/v1", values)
+          .then(res => {
+            if (res) {
+              this.props.getTableData();
+            }
+          });
         this.props.AddModal(false);
       } else {
         alert("error on submit");

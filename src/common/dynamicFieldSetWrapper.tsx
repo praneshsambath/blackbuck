@@ -5,9 +5,8 @@ import DynamicFieldSet from "./dynamicFieldSet";
 interface IProps {
   items: any;
   onValueChangeSet: any;
-  fieldName:string;
-  placeholderText:string;
-  isVisible:boolean;
+  fieldName: string;
+  placeholderText: string;
 }
 interface IState {
   items: any;
@@ -18,7 +17,6 @@ class DynamicFieldSetWrapper extends React.Component<IProps, IState> {
     this.onAddItem = this.onAddItem.bind(this);
     this.onRemoveItem = this.onRemoveItem.bind(this);
     this.onValueChange = this.onValueChange.bind(this);
-
     this.state = {
       items: props.items || []
     };
@@ -34,7 +32,7 @@ class DynamicFieldSetWrapper extends React.Component<IProps, IState> {
         onValueChange={this.onValueChange}
         fieldName={this.props.fieldName}
         placeholderText={this.props.placeholderText}
-        isVisible={this.props.isVisible}
+        // defaultValueToDisplay={this.props.defaultValueToDisplay}
       />
     );
   }
@@ -70,7 +68,7 @@ class DynamicFieldSetWrapper extends React.Component<IProps, IState> {
       ...items.slice(index + 1)
     ];
     onValueChangeSet(newItems);
-
+console.log(newItems)
     this.setState({
       items: newItems
     });

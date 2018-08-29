@@ -1,9 +1,13 @@
 import { Modal } from "antd";
 import * as React from "react";
+import baseUrl from "../../common/baseUrl";
+import httpClient from "../../Utils/httpClient";
 
 interface IProps {
   DeleteModal: any;
   visible: boolean;
+  getTableData: any;
+  dataToDisplay: any;
 }
 class DeleteModal extends React.Component<IProps> {
   constructor(props: IProps) {
@@ -28,8 +32,22 @@ class DeleteModal extends React.Component<IProps> {
       </Modal>
     );
   }
-  private DeleteTransporter = () => {
-    this.props.DeleteModal(false);
+  private DeleteTransporter = (e: any) => {
+    e.preventDefault();
+
+    this.props.dataToDisplay.is_active = true;
+    httpClient
+      .getInstance()
+      .post(
+        baseUrl + " ​/ims/transporter/v1/" + this.props.dataToDisplay[0].id,
+        this.props.dataToDisplay
+      )
+      .then(res => {
+        if (res) {
+          this.props.getTableData();
+          this.props.DeleteModal(false);
+        }
+      });
   };
   private cancelDeleteTransporterModal = () => {
     this.props.DeleteModal(false);

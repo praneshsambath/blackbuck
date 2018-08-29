@@ -46,6 +46,7 @@ class Consignor extends React.Component {
     this.ViewModal(true);
   }
   public render() {
+    console.log(this.state.data)
     const columns = [
       {
         dataIndex: "name",

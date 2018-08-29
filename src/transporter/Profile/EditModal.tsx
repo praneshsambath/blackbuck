@@ -1,13 +1,17 @@
-import { Button, Col, Form, Input, Modal, Row } from "antd";
+import { Col, Form, Input, Modal, Row } from "antd";
 import { WrappedFormUtils } from "antd/lib/form/Form";
 import * as React from "react";
+import baseUrl from "../../common/baseUrl";
 import DynamicFieldSetWrapper from "../../common/dynamicFieldSetWrapper";
+import httpClient from "../../Utils/httpClient";
 const FormItem = Form.Item;
 
 interface IProps {
-  viewAndEdit: any;
+  editModal: any;
   visible: boolean;
   form: WrappedFormUtils;
+  dataToDisplay: any;
+  getTableData:any;
 }
 interface IState {
   items: [];
@@ -15,11 +19,9 @@ interface IState {
   secondaryMobile: [];
   secondaryEmail: [];
 }
-class ViewAndEditModal extends React.Component<IProps, IState> {
+class ViewModal extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
-    // this.onValueChangeSecondaryEmail = this.onValueChangeSecondaryEmail.bind(this);
-    // this.onChangeValueSecondaryMobile = this.onChangeValueSecondaryMobile.bind(this);
     this.state = {
       isEdit: true,
       items: [],
@@ -28,7 +30,8 @@ class ViewAndEditModal extends React.Component<IProps, IState> {
     };
   }
   public render() {
-    const { items } = this.state;
+    console.log(this.props.dataToDisplay[0].id)
+    // const { items } = this.state;
     const { getFieldDecorator } = this.props.form;
     return (
       <Modal
@@ -38,8 +41,6 @@ class ViewAndEditModal extends React.Component<IProps, IState> {
         onCancel={this.cancelButton}
         okText="Ok"
         okType="primary"
-        okButtonProps={{ disabled: !this.state.isEdit }}
-        cancelButtonProps={{ disabled: !this.state.isEdit }}
       >
         <Form>
           <Row
@@ -49,60 +50,26 @@ class ViewAndEditModal extends React.Component<IProps, IState> {
             style={{ paddingBottom: 12 }}
           >
             <Col />
-            <Col>
-              {!this.state.isEdit ? (
-                <Button
-                  ghost={true}
-                  type="primary"
-                  size="small"
-                  icon="close"
-                  onClick={this.EditVisiblity}
-                >
-                  Cancel
-                </Button>
-              ) : null}
-              {this.state.isEdit ? (
-                <Button
-                  type="primary"
-                  size="small"
-                  style={{ marginLeft: 8 }}
-                  icon="edit"
-                  onClick={this.EditVisiblity}
-                >
-                  Edit
-                </Button>
-              ) : (
-                <Button
-                  type="primary"
-                  size="small"
-                  style={{ marginLeft: 8 }}
-                  icon="save"
-                  onClick={this.EditVisiblity}
-                >
-                  Save
-                </Button>
-              )}
-            </Col>
           </Row>
           <Row gutter={24}>
             <Col span={12}>
-              <FormItem label="Transporter ID">
-                {getFieldDecorator("id", {
-                  // initialValue: "NAme",
+              <FormItem label="Transporter Code">
+                {getFieldDecorator("code", {
+                  initialValue: this.props.dataToDisplay[0].code,
                   rules: [
                     {
-                      message: "Transporter ID is required",
+                      message: "Transporter Code is required",
                       required: true
                     }
                   ],
                   validateTrigger: ["onChange", "onBlur"]
-                })(<Input disabled={true} placeholder="Transporter ID" />)}
+                })(<Input disabled={true} placeholder="Transporter Code" />)}
               </FormItem>
             </Col>
             <Col span={12}>
               <FormItem label="Transporter Name">
                 {getFieldDecorator("name", {
-                  // initialValue: "NAme",
+                  initialValue: this.props.dataToDisplay[0].name,
                   rules: [
                     {
                       message: "Transporter Name is required",
@@ -110,18 +77,13 @@ class ViewAndEditModal extends React.Component<IProps, IState> {
                     }
                   ],
                   validateTrigger: ["onChange", "onBlur"]
-                })(
-                  <Input
-                    disabled={this.state.isEdit}
-                    placeholder="Transporter Name"
-                  />
-                )}
+                })(<Input placeholder="Transporter Name" />)}
               </FormItem>
             </Col>
             <Col span={12}>
               <FormItem label="Primary Email ID">
                 {getFieldDecorator("email", {
-                  // initialValue: "NAme",
+                  initialValue: this.props.dataToDisplay[0].email,
                   rules: [
                     {
                       message: "Email ID is required",
@@ -129,18 +91,13 @@ class ViewAndEditModal extends React.Component<IProps, IState> {
                     }
                   ],
                   validateTrigger: ["onChange", "onBlur"]
-                })(
-                  <Input
-                    disabled={this.state.isEdit}
-                    placeholder="Enter Primary Email"
-                  />
-                )}
+                })(<Input placeholder="Enter Primary Email" />)}
               </FormItem>
             </Col>
             <Col span={12}>
               <FormItem label="Primary Mobile Number">
-                {getFieldDecorator("number", {
-                  // initialValue: "NAme",
+                {getFieldDecorator("phone", {
+                  initialValue: this.props.dataToDisplay[0].phone,
                   rules: [
                     {
                       message: "Mobile Number is required",
@@ -148,30 +105,23 @@ class ViewAndEditModal extends React.Component<IProps, IState> {
                     }
                   ],
                   validateTrigger: ["onChange", "onBlur"]
-                })(
-                  <Input
-                    disabled={this.state.isEdit}
-                    placeholder="Enter Primary Mobile Number"
-                  />
-                )}
+                })(<Input placeholder="Enter Primary Mobile Number" />)}
               </FormItem>
             </Col>
             <Col span={12}>
               <DynamicFieldSetWrapper
-                items={items}
+                items={this.props.dataToDisplay[0].seconday_communications.emails}
                 onValueChangeSet={this.onValueChangeSecondaryEmail}
                 fieldName="Secondary Email ID"
                 placeholderText="Enter Email"
-                isVisible={this.state.isEdit}
               />
             </Col>
             <Col span={12}>
               <DynamicFieldSetWrapper
-                items={items}
+                items={this.props.dataToDisplay[0].seconday_communications.phone_numbers}
                 onValueChangeSet={this.onChangeValueSecondaryMobile}
                 fieldName="Secondary Mobile Number"
                 placeholderText="Enter Mobile"
-                isVisible={this.state.isEdit}
               />
             </Col>
           </Row>
@@ -179,27 +129,31 @@ class ViewAndEditModal extends React.Component<IProps, IState> {
       </Modal>
     );
   }
-  private EditVisiblity = () => {
-    this.setState({
-      isEdit: !this.state.isEdit
-    });
-  };
   private submitButton = (e: any) => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err: any, values: any) => {
       if (!err) {
-        // console.log(values);
-        values.secondaryEmail = this.state.secondaryEmail;
-        values.secondaryMobile = this.state.secondaryMobile;
-        console.log(values);
-        this.props.viewAndEdit(false);
-      } else {
-        alert("error on submit");
-      }
-    });
+        values.seconday_communications = {
+          emails: this.state.secondaryEmail,
+          phone_numbers: this.state.secondaryMobile
+        };
+       httpClient
+        .getInstance()
+        .post(baseUrl + " ​/ims/transporter/v1/"+this.props.dataToDisplay[0].id, values)
+        .then(res => {
+          if (res) {
+            this.props.getTableData();
+            this.props.editModal(false);
+          }
+        });
+       
+    } else {
+      alert("error on submit");
+    }
+  });
   };
   private cancelButton = () => {
-    this.props.viewAndEdit(false);
+    this.props.editModal(false);
   };
   private onValueChangeSecondaryEmail = (value: []) => {
     this.setState({
@@ -212,4 +166,4 @@ class ViewAndEditModal extends React.Component<IProps, IState> {
     });
   };
 }
-export default Form.create()(ViewAndEditModal);
+export default Form.create()(ViewModal);

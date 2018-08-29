@@ -1,34 +1,47 @@
 import { Col, Form, Modal, Row } from "antd";
-import { WrappedFormUtils } from "antd/lib/form/Form";
 import * as React from "react";
-import "./consignor.css";
-// const FormItem = Form.Item;
+
 interface IProps {
+  viewModal: any;
   visible: boolean;
-  ViewModal: any;
-  form: WrappedFormUtils;
   dataToDisplay: any;
 }
-class ViewModal extends React.Component<IProps> {
+interface IState {
+  isEdit: boolean;
+}
+class ViewModal extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
+    this.state = {
+      isEdit: true
+    };
   }
   public render() {
     console.log(this.props.dataToDisplay);
     return (
       <Modal
-        title="View Modal"
+        title="View Transporter"
         visible={this.props.visible}
         onOk={this.submitButton}
         onCancel={this.cancelButton}
         okText="Ok"
         okType="primary"
+        okButtonProps={{ disabled: !this.state.isEdit }}
+        cancelButtonProps={{ disabled: !this.state.isEdit }}
       >
         <Form>
+          <Row
+            type="flex"
+            justify="space-between"
+            align="middle"
+            style={{ paddingBottom: 12 }}
+          >
+            <Col />
+          </Row>
           <Row gutter={24}>
             <Col span={12}>
               <div>
-                <h4 className="label">Consignor Code</h4>
+                <h4 className="label">Transporter Code</h4>
               </div>
               <div>
                 <span className="viewData">
@@ -38,7 +51,7 @@ class ViewModal extends React.Component<IProps> {
             </Col>
             <Col span={12}>
               <div>
-                <h4 className="label">Consignor Name</h4>
+                <h4 className="label">Transporter Name</h4>
               </div>
               <div>
                 <span className="viewData">
@@ -51,21 +64,11 @@ class ViewModal extends React.Component<IProps> {
           <Row gutter={24}>
             <Col span={12}>
               <div>
-                <h4 className="label">State</h4>
+                <h4 className="label">Primary Email ID</h4>
               </div>
               <div>
                 <span className="viewData">
-                  {this.props.dataToDisplay.state_name}
-                </span>
-              </div>
-            </Col>
-            <Col span={12}>
-              <div>
-                <h4 className="label">Location</h4>
-              </div>
-              <div>
-                <span className="viewData">
-                  {this.props.dataToDisplay.location_name}
+                  {this.props.dataToDisplay.email}
                 </span>
               </div>
             </Col>
@@ -74,11 +77,21 @@ class ViewModal extends React.Component<IProps> {
           <Row gutter={24}>
             <Col span={12}>
               <div>
-                <h4 className="label">Sub Location</h4>
+                <h4 className="label">Primary Mobile Number</h4>
               </div>
               <div>
                 <span className="viewData">
-                  {this.props.dataToDisplay.sublocation_name}
+                  {this.props.dataToDisplay.phone}
+                </span>
+              </div>
+            </Col>
+            <Col span={12}>
+              <div>
+                <h4 className="label">Primary Mobile Number</h4>
+              </div>
+              <div>
+                <span className="viewData">
+                  {this.props.dataToDisplay.phone}
                 </span>
               </div>
             </Col>
@@ -87,22 +100,37 @@ class ViewModal extends React.Component<IProps> {
           <Row gutter={24}>
             <Col span={12}>
               <div>
-                <h4 className="label">Latitude</h4>
+                <h4 className="label">Secondary Email ID</h4>
               </div>
               <div>
                 <span className="viewData">
-                  {this.props.dataToDisplay.latitude}
+                  {this.props.dataToDisplay.seconday_communications.emails.map(
+                    (email: any, index: number) => {
+                      return (
+                        <div key={index}>
+                          <div>{email}</div>
+                        </div>
+                      );
+                    }
+                  )}
                 </span>
               </div>
-              ]
             </Col>
             <Col span={12}>
               <div>
-                <h4 className="label">Longitude</h4>
+                <h4 className="label">Primary Mobile Number</h4>
               </div>
               <div>
                 <span className="viewData">
-                  {this.props.dataToDisplay.longitude}
+                  {this.props.dataToDisplay.seconday_communications.phone_numbers.map(
+                    (mobileNo: any, index: number) => {
+                      return (
+                        <div key={index}>
+                          <div>{mobileNo}</div>
+                        </div>
+                      );
+                    }
+                  )}
                 </span>
               </div>
             </Col>
@@ -111,11 +139,11 @@ class ViewModal extends React.Component<IProps> {
       </Modal>
     );
   }
-  private submitButton = () => {
-    this.props.ViewModal(false);
+  private submitButton = (e: any) => {
+    this.props.viewModal(false);
   };
   private cancelButton = () => {
-    this.props.ViewModal(false);
+    this.props.viewModal(false);
   };
 }
-export default Form.create()(ViewModal);
+export default ViewModal;

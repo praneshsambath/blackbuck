@@ -8,12 +8,10 @@ interface IProps {
   fieldName: string;
   onValueChange: any;
   placeholderText: string;
-  isVisible:boolean;
 }
 class DynamicFieldSet extends React.Component<IProps> {
   constructor(props: IProps) {
     super(props);
-    console.log(this.props.isVisible)
   }
   public render() {
     const { items } = this.props;
@@ -33,18 +31,17 @@ class DynamicFieldSet extends React.Component<IProps> {
                     <Input
                       onChange={onChangeCb}
                       placeholder={this.props.placeholderText}
-                      value={item.value}
-                      disabled={this.props.isVisible}
+                      defaultValue={item ? item : item.value}
                     />
                   </Col>
                   <Col span={8}>
-                    <Button  disabled={this.props.isVisible} type="dashed" icon="delete" onClick={onRemoveCb} />
+                    <Button type="dashed" icon="delete" onClick={onRemoveCb} />
                   </Col>
                 </Row>
               </Form.Item>
             );
           })}
-          <Button  disabled={this.props.isVisible} type="dashed" onClick={this.onAdd}>
+          <Button type="dashed" onClick={this.onAdd}>
             <Icon type="plus" />
             Add Item
           </Button>

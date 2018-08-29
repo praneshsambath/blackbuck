@@ -24,8 +24,8 @@ class DeleteModal extends React.Component<IProps> {
         <b>Are You Sure You want to delete Consignee?</b>
         <br />
         <span>
-          Deleting the selected Consignee will remove all the details related
-          to the Consignee
+          Deleting the selected Consignee will remove all the details related to
+          the Consignee
         </span>
       </Modal>
     );
@@ -39,7 +39,7 @@ class DeleteModal extends React.Component<IProps> {
         baseUrl + "/ims/depository/v1/" + this.props.dataToDelete[0].id,
         this.props.dataToDelete[0]
       )
-      .then((res:any) => console.log(res));
+      .then((res: any) => console.log(res));
     this.props.DeleteModal(false);
   };
   private cancelButton = () => {
